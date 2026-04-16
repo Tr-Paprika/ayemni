@@ -117,7 +117,7 @@ img { display: block; max-width: 100%; }
 .topbar-center { flex: 1; display: flex; align-items: center; gap: var(--space-3); }
 .topbar-title {
   font-size: var(--text-sm); font-weight: 600;
-  color: var(--color-text);
+  color: var(--color-text); display: none;
 }
 .topbar-actions { margin-left: auto; display: flex; align-items: center; gap: var(--space-2); }
 .btn-icon {
@@ -131,16 +131,13 @@ img { display: block; max-width: 100%; }
 }
 .btn-icon:hover { background: var(--color-surface-offset); color: var(--color-text); }
 
-/* hamburger - sadece mobilde görünür */
-.btn-hamburger { display: none; }
-
 .sidebar {
   background: var(--color-surface);
   border-right: 1px solid var(--color-border);
   padding: var(--space-6) 0;
   overflow-y: auto;
-  transition: transform 0.25s ease;
 }
+.sidebar-section { padding: 0 var(--space-4) var(--space-4); }
 .sidebar-label {
   font-size: var(--text-xs); font-weight: 700;
   color: var(--color-text-faint); text-transform: uppercase; letter-spacing: 0.08em;
@@ -169,64 +166,12 @@ img { display: block; max-width: 100%; }
   background: var(--color-bg);
 }
 
-/* ===== PROGRESS BAR ===== */
-.progress-bar-wrap {
-  margin-bottom: var(--space-6);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4) var(--space-6);
-  box-shadow: var(--shadow-sm);
-}
-.progress-bar-top {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: var(--space-3);
-}
-.progress-bar-label { font-size: var(--text-xs); font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
-.progress-bar-pct { font-size: var(--text-sm); font-weight: 700; color: var(--color-primary); }
-.progress-track {
-  height: 8px; background: var(--color-surface-offset); border-radius: 999px; overflow: hidden;
-}
-.progress-fill {
-  height: 100%; background: linear-gradient(90deg, var(--color-primary), var(--color-success));
-  border-radius: 999px; transition: width 0.4s ease;
-  width: 0%;
-}
-.progress-steps {
-  display: flex; justify-content: space-between; margin-top: var(--space-3);
-}
-.progress-step {
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
-  flex: 1; cursor: pointer;
-}
-.progress-step-dot {
-  width: 22px; height: 22px; border-radius: 50%;
-  border: 2px solid var(--color-border);
-  background: var(--color-surface-2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 10px; font-weight: 700; color: var(--color-text-faint);
-  transition: all 0.2s;
-}
-.progress-step.done .progress-step-dot {
-  background: var(--color-success); border-color: var(--color-success); color: white;
-}
-.progress-step.active .progress-step-dot {
-  background: var(--color-primary); border-color: var(--color-primary); color: white;
-  box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-primary) 20%, transparent);
-}
-.progress-step-name {
-  font-size: 10px; color: var(--color-text-faint); text-align: center; font-weight: 600;
-  transition: color 0.2s;
-}
-.progress-step.active .progress-step-name { color: var(--color-primary); }
-.progress-step.done .progress-step-name { color: var(--color-success); }
-
 /* ===== FORM VIEWS ===== */
 .view { display: none; }
 .view.active { display: block; }
 .page-header {
-  margin-bottom: var(--space-6);
-  padding-bottom: var(--space-5);
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-6);
   border-bottom: 1px solid var(--color-divider);
 }
 .page-header h1 {
@@ -283,43 +228,8 @@ img { display: block; max-width: 100%; }
 .form-group input::placeholder { color: var(--color-text-faint); }
 .form-group textarea { min-height: 80px; resize: vertical; }
 
-/* ===== VALİDASYON ===== */
-.form-group input.invalid,
-.form-group select.invalid,
-.form-group textarea.invalid {
-  border-color: var(--color-warning);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-warning) 15%, transparent);
-  background: var(--color-warning-light);
-}
-.field-error {
-  font-size: 11px; color: var(--color-warning); font-weight: 600;
-  display: flex; align-items: center; gap: 4px; margin-top: 2px;
-}
-.field-error::before { content: "⚠"; }
-.form-group input.valid,
-.form-group select.valid {
-  border-color: var(--color-success);
-}
-
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); }
 .form-full { grid-column: 1 / -1; }
-
-/* ===== AUTO-CALC INDICATOR ===== */
-.auto-calc {
-  position: relative;
-}
-.auto-calc input[readonly] {
-  opacity: 1 !important;
-  background: color-mix(in oklab, var(--color-primary-light) 60%, var(--color-surface-2)) !important;
-  border-color: color-mix(in oklab, var(--color-primary) 30%, var(--color-border)) !important;
-  color: var(--color-primary) !important;
-  font-weight: 600;
-}
-.auto-badge {
-  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--color-primary); background: var(--color-primary-light);
-  padding: 1px 5px; border-radius: 4px; display: inline-block; margin-left: 4px;
-}
 
 /* ===== BUTTONS ===== */
 .btn {
@@ -342,14 +252,6 @@ img { display: block; max-width: 100%; }
 .btn-secondary:hover { background: var(--color-divider); }
 .btn-success { background: var(--color-success); color: white; }
 .btn-success:hover { filter: brightness(0.9); }
-.btn-pdf {
-  background: linear-gradient(135deg, #c0392b, #e74c3c);
-  color: white; font-size: var(--text-sm); font-weight: 700;
-  padding: var(--space-3) var(--space-6);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-md);
-}
-.btn-pdf:hover { filter: brightness(1.1); box-shadow: var(--shadow-lg); transform: translateY(-1px); }
 .btn-group { display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--space-6); }
 
 /* ===== BADGES ===== */
@@ -371,7 +273,7 @@ img { display: block; max-width: 100%; }
 .report-header {
   background: linear-gradient(135deg, var(--color-primary) 0%, #0d3f63 100%);
   color: white;
-  padding: var(--space-10) var(--space-8);
+  padding: var(--space-6) var(--space-8);
   border-radius: var(--radius-lg);
   margin-bottom: var(--space-8);
   position: relative;
@@ -380,7 +282,7 @@ img { display: block; max-width: 100%; }
 .report-header::before {
   content: "";
   position: absolute; inset: 0;
-  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 .report-header-grid { display: grid; grid-template-columns: 1fr auto; gap: var(--space-6); align-items: start; position: relative; }
 .report-header h1 { font-family: var(--font-display); font-size: var(--text-xl); margin-bottom: var(--space-2); }
@@ -388,22 +290,6 @@ img { display: block; max-width: 100%; }
 .report-meta { text-align: right; }
 .report-meta .meta-item { font-size: var(--text-xs); opacity: 0.75; margin-bottom: var(--space-1); }
 .report-meta .meta-value { font-size: var(--text-sm); font-weight: 600; }
-
-/* PDF Export Action Bar */
-.report-action-bar {
-  display: flex; align-items: center; justify-content: space-between;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-4) var(--space-6);
-  margin-bottom: var(--space-6);
-  box-shadow: var(--shadow-sm);
-  flex-wrap: wrap; gap: var(--space-3);
-}
-.report-action-bar-left { display: flex; flex-direction: column; gap: 2px; }
-.report-action-bar-left strong { font-size: var(--text-sm); color: var(--color-text); }
-.report-action-bar-left span { font-size: var(--text-xs); color: var(--color-text-muted); }
-.report-action-bar-right { display: flex; gap: var(--space-3); flex-wrap: wrap; }
 
 .report-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-6); margin-bottom: var(--space-6); }
 .report-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); margin-bottom: var(--space-6); }
@@ -478,28 +364,18 @@ img { display: block; max-width: 100%; }
 /* ===== TABS ===== */
 .tab-bar {
   display: flex; gap: var(--space-1); border-bottom: 2px solid var(--color-divider);
-  margin-bottom: var(--space-6); overflow-x: auto;
+  margin-bottom: var(--space-6);
 }
 .tab-btn {
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-3) var(--space-5);
   border: none; background: none;
   font-size: var(--text-sm); font-weight: 600;
   color: var(--color-text-muted); cursor: pointer;
   border-bottom: 2px solid transparent; margin-bottom: -2px;
-  transition: all 0.15s; white-space: nowrap;
-  position: relative;
+  transition: all 0.15s;
 }
 .tab-btn:hover { color: var(--color-text); }
 .tab-btn.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
-.tab-btn .tab-check {
-  display: inline-block; margin-left: 6px;
-  width: 14px; height: 14px; line-height: 14px; font-size: 9px;
-  border-radius: 50%; background: var(--color-surface-offset);
-  color: var(--color-text-faint); text-align: center; vertical-align: middle; font-weight: 700;
-}
-.tab-btn.tab-complete .tab-check {
-  background: var(--color-success); color: white;
-}
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
@@ -517,31 +393,10 @@ img { display: block; max-width: 100%; }
 /* ===== SEPARATOR ===== */
 .divider { border: none; border-top: 1px solid var(--color-divider); margin: var(--space-6) 0; }
 
-/* ===== TOAST ===== */
-.toast-container {
-  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-  display: flex; flex-direction: column; gap: var(--space-2);
-}
-.toast {
-  background: var(--color-text); color: var(--color-bg);
-  padding: var(--space-3) var(--space-5);
-  border-radius: var(--radius-md);
-  font-size: var(--text-sm); font-weight: 600;
-  box-shadow: var(--shadow-lg);
-  animation: slideUp 0.25s ease;
-  display: flex; align-items: center; gap: var(--space-2);
-}
-.toast.toast-error { background: var(--color-warning); color: white; }
-.toast.toast-success { background: var(--color-success); color: white; }
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
 /* ===== PRINT ===== */
 @media print {
   .app-shell { display: block; }
-  .topbar, .sidebar, .report-action-bar { display: none !important; }
+  .topbar, .sidebar { display: none; }
   .main-content { padding: 0; overflow: visible; }
   .view#view-form { display: none !important; }
   .report-wrapper.active { display: block !important; }
@@ -554,50 +409,23 @@ img { display: block; max-width: 100%; }
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
   .app-shell { grid-template-columns: 1fr; }
-  .sidebar {
-    display: block;
-    position: fixed; top: 60px; left: 0; bottom: 0; z-index: 200;
-    width: 260px;
-    transform: translateX(-100%);
-    box-shadow: var(--shadow-lg);
-  }
-  .sidebar.open { transform: translateX(0); }
-  .sidebar-overlay {
-    display: none; position: fixed; inset: 0; z-index: 199;
-    background: rgba(0,0,0,0.4);
-  }
-  .sidebar-overlay.open { display: block; }
-  .btn-hamburger { display: flex; }
+  .sidebar { display: none; }
   .report-grid { grid-template-columns: 1fr 1fr; }
   .form-row { grid-template-columns: 1fr; }
-  .progress-step-name { display: none; }
 }
 @media (max-width: 600px) {
   .report-grid { grid-template-columns: 1fr; }
   .report-grid-2 { grid-template-columns: 1fr; }
   .kpi-grid { grid-template-columns: 1fr 1fr; }
   .main-content { padding: var(--space-4); }
-  .report-action-bar { flex-direction: column; align-items: stretch; }
-  .report-action-bar-right { flex-direction: column; }
-  .report-action-bar-right .btn { justify-content: center; }
 }
 </style>
 </head>
 <body>
-
-<!-- Sidebar Overlay (mobile) -->
-<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
-
-<!-- Toast Container -->
-<div class="toast-container" id="toast-container"></div>
-
 <div class="app-shell">
 
   <!-- TOP BAR -->
   <header class="topbar">
-    <button class="btn-icon btn-hamburger" onclick="toggleSidebar()" aria-label="Menüyü aç/kapat">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
     <a class="logo" href="#">
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-label="Logo">
         <rect width="28" height="28" rx="7" fill="var(--color-primary)"/>
@@ -620,7 +448,7 @@ img { display: block; max-width: 100%; }
   </header>
 
   <!-- SIDEBAR -->
-  <nav class="sidebar" id="sidebar">
+  <nav class="sidebar">
     <div class="sidebar-label">Proje Menüsü</div>
     <button class="sidebar-item active" onclick="switchView('form', this)">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
@@ -642,45 +470,12 @@ img { display: block; max-width: 100%; }
         <p>Fizibilite raporunu oluşturmak için tüm sekmelerdeki bilgileri doldurun.</p>
       </div>
 
-      <!-- PROGRESS BAR -->
-      <div class="progress-bar-wrap">
-        <div class="progress-bar-top">
-          <span class="progress-bar-label">Form Tamamlanma Durumu</span>
-          <span class="progress-bar-pct" id="progress-pct">%0</span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill" id="progress-fill"></div>
-        </div>
-        <div class="progress-steps">
-          <div class="progress-step active" id="pstep-0" onclick="switchTab('tab-genel', document.querySelectorAll('.tab-btn')[0])">
-            <div class="progress-step-dot">1</div>
-            <span class="progress-step-name">Genel</span>
-          </div>
-          <div class="progress-step" id="pstep-1" onclick="switchTab('tab-mevcut', document.querySelectorAll('.tab-btn')[1])">
-            <div class="progress-step-dot">2</div>
-            <span class="progress-step-name">Mevcut</span>
-          </div>
-          <div class="progress-step" id="pstep-2" onclick="switchTab('tab-imar', document.querySelectorAll('.tab-btn')[2])">
-            <div class="progress-step-dot">3</div>
-            <span class="progress-step-name">İmar</span>
-          </div>
-          <div class="progress-step" id="pstep-3" onclick="switchTab('tab-yeni', document.querySelectorAll('.tab-btn')[3])">
-            <div class="progress-step-dot">4</div>
-            <span class="progress-step-name">Yeni Proje</span>
-          </div>
-          <div class="progress-step" id="pstep-4" onclick="switchTab('tab-mali', document.querySelectorAll('.tab-btn')[4])">
-            <div class="progress-step-dot">5</div>
-            <span class="progress-step-name">Mali</span>
-          </div>
-        </div>
-      </div>
-
       <div class="tab-bar">
-        <button class="tab-btn active" onclick="switchTab('tab-genel', this)">1. Genel Bilgiler <span class="tab-check">–</span></button>
-        <button class="tab-btn" onclick="switchTab('tab-mevcut', this)">2. Mevcut Durum <span class="tab-check">–</span></button>
-        <button class="tab-btn" onclick="switchTab('tab-imar', this)">3. İmar Verileri <span class="tab-check">–</span></button>
-        <button class="tab-btn" onclick="switchTab('tab-yeni', this)">4. Yeni Proje <span class="tab-check">–</span></button>
-        <button class="tab-btn" onclick="switchTab('tab-mali', this)">5. Mali Analiz <span class="tab-check">–</span></button>
+        <button class="tab-btn active" onclick="switchTab('tab-genel', this)">1. Genel Bilgiler</button>
+        <button class="tab-btn" onclick="switchTab('tab-mevcut', this)">2. Mevcut Durum</button>
+        <button class="tab-btn" onclick="switchTab('tab-imar', this)">3. İmar Verileri</button>
+        <button class="tab-btn" onclick="switchTab('tab-yeni', this)">4. Yeni Proje</button>
+        <button class="tab-btn" onclick="switchTab('tab-mali', this)">5. Mali Analiz</button>
       </div>
 
       <!-- TAB 1: GENEL BİLGİLER -->
@@ -697,43 +492,19 @@ img { display: block; max-width: 100%; }
           </div>
           <div class="card-body">
             <div class="form-grid">
-              <div class="form-group">
-                <label>Proje Adı <span style="color:var(--color-warning)">*</span></label>
-                <input type="text" id="f_proje_adi" placeholder="Örn: Kadıköy Kentsel Dönüşüm Projesi" data-required="true" oninput="onFieldInput(this); updateProgress()">
-              </div>
-              <div class="form-group">
-                <label>Proje Adresi <span style="color:var(--color-warning)">*</span></label>
-                <input type="text" id="f_adres" placeholder="Mahalle, cadde, sokak no" data-required="true" oninput="onFieldInput(this); updateProgress()">
-              </div>
-              <div class="form-group">
-                <label>İl / İlçe <span style="color:var(--color-warning)">*</span></label>
-                <input type="text" id="f_il_ilce" placeholder="Örn: İstanbul / Kadıköy" data-required="true" oninput="onFieldInput(this); updateProgress()">
-              </div>
-              <div class="form-group">
-                <label>Ada / Parsel</label>
-                <input type="text" id="f_ada_parsel" placeholder="Örn: 1234 / 56" oninput="updateProgress()">
-              </div>
-              <div class="form-group">
-                <label>Toplam Arsa Alanı (m²) <span style="color:var(--color-warning)">*</span></label>
-                <input type="number" id="f_arsa_alani" placeholder="2150" data-required="true" oninput="onFieldInput(this); autoCalcImar(); updateProgress()">
-              </div>
-              <div class="form-group">
-                <label>Rapor Tarihi</label>
-                <input type="date" id="f_tarih" oninput="updateProgress()">
-              </div>
-              <div class="form-group">
-                <label>Hazırlayan Firma <span style="color:var(--color-warning)">*</span></label>
-                <input type="text" id="f_firma" placeholder="Şirket adı" data-required="true" oninput="onFieldInput(this); updateProgress()">
-              </div>
-              <div class="form-group">
-                <label>Sorumlu Kişi</label>
-                <input type="text" id="f_sorumlu" placeholder="Ad Soyad / Unvan" oninput="updateProgress()">
-              </div>
+              <div class="form-group"><label>Proje Adı</label><input type="text" id="f_proje_adi" placeholder="Örn: Kadıköy Kentsel Dönüşüm Projesi"></div>
+              <div class="form-group"><label>Proje Adresi</label><input type="text" id="f_adres" placeholder="Mahalle, cadde, sokak no"></div>
+              <div class="form-group"><label>İl / İlçe</label><input type="text" id="f_il_ilce" placeholder="Örn: İstanbul / Kadıköy"></div>
+              <div class="form-group"><label>Ada / Parsel</label><input type="text" id="f_ada_parsel" placeholder="Örn: 1234 / 56"></div>
+              <div class="form-group"><label>Toplam Arsa Alanı (m²)</label><input type="number" id="f_arsa_alani" placeholder="2150" oninput="calcTaksHint()"></div>
+              <div class="form-group"><label>Rapor Tarihi</label><input type="date" id="f_tarih"></div>
+              <div class="form-group"><label>Hazırlayan Firma</label><input type="text" id="f_firma" placeholder="Şirket adı"></div>
+              <div class="form-group"><label>Sorumlu Kişi</label><input type="text" id="f_sorumlu" placeholder="Ad Soyad / Unvan"></div>
             </div>
           </div>
         </div>
         <div class="btn-group">
-          <button class="btn btn-primary" onclick="nextTab(0)">Sonraki Adım →</button>
+          <button class="btn btn-primary" onclick="switchTab('tab-mevcut', document.querySelectorAll('.tab-btn')[1])">Sonraki Adım →</button>
         </div>
       </div>
 
@@ -752,8 +523,8 @@ img { display: block; max-width: 100%; }
           <div class="card-body">
             <div class="form-grid">
               <div class="form-group">
-                <label>Mevcut Yapı Türü <span style="color:var(--color-warning)">*</span></label>
-                <select id="f_yapi_turu" data-required="true" onchange="onFieldInput(this); updateProgress()">
+                <label>Mevcut Yapı Türü</label>
+                <select id="f_yapi_turu">
                   <option value="">Seçiniz...</option>
                   <option>Konut</option>
                   <option>Ticari</option>
@@ -762,13 +533,11 @@ img { display: block; max-width: 100%; }
                   <option>Tarım</option>
                 </select>
               </div>
-              <div class="form-group"><label>Bina Sayısı (Adet)</label><input type="number" id="f_bina_sayisi" placeholder="2" oninput="updateProgress()"></div>
-              <div class="form-group"><label>Mevcut Kat Sayısı</label><input type="number" id="f_kat_sayisi_eski" placeholder="5" oninput="updateProgress()"></div>
-              <div class="form-group"><label>Toplam Mevcut Bağımsız Bölüm</label><input type="number" id="f_bolum_eski" placeholder="24" oninput="updateProgress()"></div>
-              <div class="form-group"><label>Konut Adedi</label><input type="number" id="f_konut_eski" placeholder="18" oninput="updateProgress()"></div>
-              <div class="form-group"><label>Dükkan / Ofis Adedi</label><input type="number" id="f_dukkan_eski" placeholder="6" oninput="updateProgress()"></div>
-              <div class="form-group"><label>Toplam Mevcut İnşaat Alanı (m²)</label><input type="number" id="f_alan_eski" placeholder="3800" oninput="updateProgress()"></div>
-              <div class="form-group"><label>Yapı Yaşı (Yıl)</label><input type="number" id="f_yapi_yasi" placeholder="35" oninput="updateProgress()"></div>
+              <div class="form-group"><label>Bina Sayısı (Adet)</label><input type="number" id="f_bina_sayisi" placeholder="2"></div>
+              <div class="form-group"><label>Mevcut Kat Sayısı</label><input type="number" id="f_kat_sayisi_eski" placeholder="5"></div>
+              <div class="form-group"><label>Bağımsız Daire (Konut)</label><input type="number" id="f_konut_eski" placeholder="18"></div>
+              <div class="form-group"><label>Bağımsız İşyeri (Dükkan/Ofis)</label><input type="number" id="f_dukkan_eski" placeholder="6"></div>
+              <div class="form-group"><label>Yapı Yaşı (Yıl)</label><input type="number" id="f_yapi_yasi" placeholder="35"></div>
               <div class="form-group">
                 <label>Fiziki Durum</label>
                 <div class="status-select" id="fiziki-durum-select">
@@ -780,7 +549,7 @@ img { display: block; max-width: 100%; }
               </div>
               <div class="form-group">
                 <label>Kullanım Durumu</label>
-                <select id="f_kullanim" onchange="updateProgress()">
+                <select id="f_kullanim">
                   <option value="">Seçiniz...</option>
                   <option>Kullanımda</option>
                   <option>Kısmen Kiracılı</option>
@@ -790,7 +559,7 @@ img { display: block; max-width: 100%; }
               </div>
               <div class="form-group">
                 <label>Deprem Riski / Riskli Yapı Durumu</label>
-                <select id="f_deprem" onchange="updateProgress()">
+                <select id="f_deprem">
                   <option value="">Seçiniz...</option>
                   <option>Riskli Yapı Raporu Var</option>
                   <option>Riskli Yapı Raporu Yok</option>
@@ -806,7 +575,7 @@ img { display: block; max-width: 100%; }
         </div>
         <div class="btn-group">
           <button class="btn btn-secondary" onclick="switchTab('tab-genel', document.querySelectorAll('.tab-btn')[0])">← Geri</button>
-          <button class="btn btn-primary" onclick="nextTab(1)">Sonraki Adım →</button>
+          <button class="btn btn-primary" onclick="switchTab('tab-imar', document.querySelectorAll('.tab-btn')[2])">Sonraki Adım →</button>
         </div>
       </div>
 
@@ -824,45 +593,18 @@ img { display: block; max-width: 100%; }
           </div>
           <div class="card-body">
             <div class="form-grid">
+              <div class="form-group"><label>İmar Durumu / Kullanım</label><input type="text" id="f_imar_durumu" placeholder="Örn: Konut + Ticaret Alanı"></div>
               <div class="form-group">
-                <label>İmar Durumu <span style="color:var(--color-warning)">*</span></label>
-                <select id="f_imar_durumu" data-required="true" onchange="onFieldInput(this); updateProgress()">
-                  <option value="">Seçiniz...</option>
-                  <option>Konut Alanı</option>
-                  <option>Ticaret + Konut Alanı</option>
-                  <option>Ticaret Alanı</option>
-                  <option>Kentsel Dönüşüm Alanı</option>
-                  <option>Özel Proje Alanı</option>
-                </select>
+                <label>TAKS (Taban Alanı Katsayısı)</label>
+                <input type="number" step="0.01" id="f_taks" placeholder="0.40" oninput="calcTaksHint()">
+                <span id="taks_hint" style="font-size:11px;color:var(--color-primary);margin-top:3px;display:block;font-weight:600;"></span>
               </div>
-              <div class="form-group">
-                <label>TAKS (Taban Alanı Katsayısı) <span style="color:var(--color-warning)">*</span></label>
-                <input type="number" id="f_taks" placeholder="0.40" step="0.01" min="0" max="1" data-required="true" oninput="onFieldInput(this); autoCalcImar(); updateProgress()">
-              </div>
-              <div class="form-group">
-                <label>KAKS / Emsal <span style="color:var(--color-warning)">*</span></label>
-                <input type="number" id="f_kaks" placeholder="2.00" step="0.01" min="0" data-required="true" oninput="onFieldInput(this); autoCalcImar(); updateProgress()">
-              </div>
-              <div class="form-group">
-                <label>Maksimum İzin Verilen Kat Sayısı</label>
-                <input type="number" id="f_maks_kat" placeholder="8" oninput="updateProgress()">
-              </div>
-
-              <!-- Otomatik Hesaplanan Alanlar -->
-              <div class="form-group auto-calc">
-                <label>Brüt İnşaat Alanı (m²) <span class="auto-badge">Oto</span></label>
-                <input type="number" id="f_brut_alan" placeholder="—" readonly>
-                <span class="field-error" id="err_brut" style="display:none">Arsa alanı ve KAKS girilmelidir</span>
-              </div>
-              <div class="form-group auto-calc">
-                <label>Net Satılabilir Alan (m²) <span class="auto-badge">Oto</span></label>
-                <input type="number" id="f_net_alan" placeholder="—" readonly>
-              </div>
-
-              <div class="form-group form-full">
-                <label>Yapılaşma Şartları / Notlar</label>
-                <textarea id="f_yapilanma_sartlari" placeholder="Özel yapılaşma şartları, setback mesafeleri, yükseklik kısıtlamaları..."></textarea>
-              </div>
+              <div class="form-group"><label>KAKS / Emsal</label><input type="number" step="0.01" id="f_kaks" placeholder="2.00"></div>
+              <div class="form-group"><label>İlave İmar — Emsal Dışı (m²)</label><input type="number" id="f_emsal_disi" placeholder="Örn: 850" oninput="calcAreas()"></div>
+              <div class="form-group"><label>Maks. Kat Yüksekliği</label><input type="text" id="f_max_kat" placeholder="Örn: 8 Kat / 30.50m"></div>
+              <div class="form-group"><label>Toplam İnşaat Alanı - Brüt (m²)</label><input type="number" id="f_alan_brut" placeholder="7200" oninput="calcAreas()"></div>
+              <div class="form-group"><label>Yapılaşma Şartları</label><input type="text" id="f_yap_sartlari" placeholder="Örn: Ön cephe 5m çekme mesafesi"></div>
+              <input type="hidden" id="f_alan_net">
               <div class="form-group form-full">
                 <label>Kısıtlamalar (Sit alanı, şerh, vs.)</label>
                 <textarea id="f_kisitlamalar" placeholder="Herhangi bir kısıtlama, şerh veya özel durum varsa belirtin..."></textarea>
@@ -872,7 +614,7 @@ img { display: block; max-width: 100%; }
         </div>
         <div class="btn-group">
           <button class="btn btn-secondary" onclick="switchTab('tab-mevcut', document.querySelectorAll('.tab-btn')[1])">← Geri</button>
-          <button class="btn btn-primary" onclick="nextTab(2)">Sonraki Adım →</button>
+          <button class="btn btn-primary" onclick="switchTab('tab-yeni', document.querySelectorAll('.tab-btn')[3])">Sonraki Adım →</button>
         </div>
       </div>
 
@@ -890,14 +632,14 @@ img { display: block; max-width: 100%; }
           </div>
           <div class="card-body">
             <div class="form-grid">
-              <div class="form-group"><label>Yeni Kat Sayısı <span style="color:var(--color-warning)">*</span></label><input type="number" id="f_kat_yeni" placeholder="8" data-required="true" oninput="onFieldInput(this); updateProgress()"></div>
-              <div class="form-group"><label>Toplam Daire Adedi <span style="color:var(--color-warning)">*</span></label><input type="number" id="f_daire_yeni" placeholder="48" data-required="true" oninput="onFieldInput(this); updateProgress()"></div>
-              <div class="form-group"><label>1+1 Daire Adedi</label><input type="number" id="f_1p1" placeholder="10" oninput="updateProgress()"></div>
-              <div class="form-group"><label>2+1 Daire Adedi</label><input type="number" id="f_2p1" placeholder="20" oninput="updateProgress()"></div>
-              <div class="form-group"><label>3+1 Daire Adedi</label><input type="number" id="f_3p1" placeholder="18" oninput="updateProgress()"></div>
-              <div class="form-group"><label>4+1 veya Üzeri Daire Adedi</label><input type="number" id="f_4p1" placeholder="0" oninput="updateProgress()"></div>
-              <div class="form-group"><label>Ticari Alan (Dükkan / Ofis) Adedi</label><input type="number" id="f_ticari_yeni" placeholder="12" oninput="updateProgress()"></div>
-              <div class="form-group"><label>Otopark Kapasitesi (Araç)</label><input type="number" id="f_otopark" placeholder="65" oninput="updateProgress()"></div>
+              <div class="form-group"><label>Yeni Kat Sayısı</label><input type="number" id="f_kat_yeni" placeholder="8"></div>
+              <div class="form-group"><label>Toplam Daire Adedi</label><input type="number" id="f_daire_yeni" placeholder="48"></div>
+              <div class="form-group"><label>1+1 Daire Adedi</label><input type="number" id="f_1p1" placeholder="10"></div>
+              <div class="form-group"><label>2+1 Daire Adedi</label><input type="number" id="f_2p1" placeholder="20"></div>
+              <div class="form-group"><label>3+1 Daire Adedi</label><input type="number" id="f_3p1" placeholder="18"></div>
+              <div class="form-group"><label>4+1 veya Üzeri Daire Adedi</label><input type="number" id="f_4p1" placeholder="0"></div>
+              <div class="form-group"><label>Ticari Alan (Dükkan / Ofis) Adedi</label><input type="number" id="f_ticari_yeni" placeholder="12"></div>
+              <div class="form-group"><label>Otopark Kapasitesi (Araç)</label><input type="number" id="f_otopark" placeholder="65"></div>
               <div class="form-group">
                 <label>Otopark Tipi</label>
                 <select id="f_otopark_tipi">
@@ -912,7 +654,7 @@ img { display: block; max-width: 100%; }
         </div>
         <div class="btn-group">
           <button class="btn btn-secondary" onclick="switchTab('tab-imar', document.querySelectorAll('.tab-btn')[2])">← Geri</button>
-          <button class="btn btn-primary" onclick="nextTab(3)">Sonraki Adım →</button>
+          <button class="btn btn-primary" onclick="switchTab('tab-mali', document.querySelectorAll('.tab-btn')[4])">Sonraki Adım →</button>
         </div>
       </div>
 
@@ -930,38 +672,16 @@ img { display: block; max-width: 100%; }
           </div>
           <div class="card-body">
             <div class="form-grid">
-              <div class="form-group">
-                <label>Arsa Sahibi Payı (%) <span style="color:var(--color-warning)">*</span></label>
-                <input type="number" id="f_malik_pct" placeholder="50" data-required="true" oninput="onFieldInput(this); calcShare(); updateProgress()">
-              </div>
-              <div class="form-group">
-                <label>Yüklenici (Müteahhit) Payı (%)</label>
-                <input type="number" id="f_yuklenici_pct" placeholder="50" oninput="calcShare(); updateProgress()">
-              </div>
-              <div class="form-group auto-calc">
-                <label>Arsa Sahibi Payı (Net m²) <span class="auto-badge">Oto</span></label>
-                <input type="number" id="f_malik_m2" placeholder="—" readonly>
-              </div>
-              <div class="form-group auto-calc">
-                <label>Yüklenici Payı (Net m²) <span class="auto-badge">Oto</span></label>
-                <input type="number" id="f_yuklenici_m2" placeholder="—" readonly>
-              </div>
-              <div class="form-group">
-                <label>Birim m² İnşaat Maliyeti (₺/m²) <span style="color:var(--color-warning)">*</span></label>
-                <input type="number" id="f_birim_maliyet" placeholder="25000" data-required="true" oninput="onFieldInput(this); calcFinance(); updateProgress()">
-              </div>
-              <div class="form-group auto-calc">
-                <label>Tahmini Toplam İnşaat Maliyeti (₺) <span class="auto-badge">Oto</span></label>
-                <input type="number" id="f_toplam_maliyet" placeholder="—" readonly>
-              </div>
-              <div class="form-group">
-                <label>Tahmini Satış Fiyatı (₺/m²) <span style="color:var(--color-warning)">*</span></label>
-                <input type="number" id="f_satis_fiyati" placeholder="80000" data-required="true" oninput="onFieldInput(this); calcFinance(); updateProgress()">
-              </div>
-              <div class="form-group auto-calc">
-                <label>Toplam Satış Geliri (₺) <span class="auto-badge">Oto</span></label>
-                <input type="number" id="f_satis_gelir" placeholder="—" readonly>
-              </div>
+              <div class="form-group"><label>Arsa Sahibi Payı (%)</label><input type="number" id="f_malik_pct" placeholder="50" oninput="calcShare()"></div>
+              <div class="form-group"><label>Yüklenici (Müteahhit) Payı (%)</label><input type="number" id="f_yuklenici_pct" placeholder="50" oninput="calcShare()"></div>
+              <div class="form-group"><label>Arsa Sahibi Payı (Net m²)</label><input type="number" id="f_malik_m2" placeholder="—" readonly style="opacity:0.6"></div>
+              <div class="form-group"><label>Yüklenici Payı (Net m²)</label><input type="number" id="f_yuklenici_m2" placeholder="—" readonly style="opacity:0.6"></div>
+              <div class="form-group"><label>Birim m² İnşaat Maliyeti (₺/m²)</label><input type="number" id="f_birim_maliyet" placeholder="25000" oninput="calcFinance()"></div>
+              <div class="form-group"><label>Tahmini Toplam İnşaat Maliyeti (₺)</label><input type="number" id="f_toplam_maliyet" placeholder="30000000" oninput="calcFinance()"></div>
+              <input type="hidden" id="f_satis_fiyati">
+              <input type="hidden" id="f_satis_gelir">
+              <div class="form-group"><label>Yükleniciye Kalacak Daire (Adet)</label><input type="number" id="f_yuklenici_daire" placeholder="24"></div>
+              <div class="form-group"><label>Yükleniciye Kalacak İşyeri (Adet)</label><input type="number" id="f_yuklenici_isyeri" placeholder="6"></div>
               <div class="form-group form-full">
                 <label>Kentsel Dönüşüm Notları</label>
                 <textarea id="f_kd_not" placeholder="Kentsel dönüşüm kapsamı, kira yardımı süreci, taşınma desteği ve süreç hakkında notlar..."></textarea>
@@ -982,25 +702,6 @@ img { display: block; max-width: 100%; }
 
     <!-- ===== RAPOR VIEW ===== -->
     <div class="view" id="view-report">
-
-      <!-- PDF EXPORT ACTION BAR -->
-      <div class="report-action-bar no-print">
-        <div class="report-action-bar-left">
-          <strong>Fizibilite Raporu Hazır</strong>
-          <span>Raporu PDF olarak kaydedebilir veya yazdırabilirsiniz.</span>
-        </div>
-        <div class="report-action-bar-right">
-          <button class="btn btn-secondary" onclick="switchView('form', document.querySelectorAll('.sidebar-item')[0])">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            Düzenle
-          </button>
-          <button class="btn btn-pdf" onclick="printReport()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            PDF İndir / Yazdır
-          </button>
-        </div>
-      </div>
-
       <div class="report-wrapper active" id="report-output">
 
         <!-- RAPOR BAŞLIĞI -->
@@ -1008,8 +709,8 @@ img { display: block; max-width: 100%; }
           <div class="report-header-grid">
             <div>
               <div class="section-tag" style="background:rgba(255,255,255,0.15);color:white;">İnşaat Fizibilite Raporu</div>
-              <h1 id="r_proje_adi">—</h1>
-              <p id="r_adres_full">—</p>
+              <h1 id="r_proje_adi" style="font-size:clamp(1.2rem,2vw,1.8rem);margin-bottom:var(--space-1)">—</h1>
+              <p id="r_adres_full" style="opacity:0.7;font-size:var(--text-xs)">—</p>
             </div>
             <div class="report-meta">
               <div class="meta-item">Ada / Parsel</div>
@@ -1055,8 +756,8 @@ img { display: block; max-width: 100%; }
                 <tr><th>Yapı Türü</th><td id="r_yapi_turu">—</td></tr>
                 <tr><th>Bina Sayısı</th><td id="r_bina_sayisi">—</td></tr>
                 <tr><th>Kat Sayısı</th><td id="r_kat_eski">—</td></tr>
-                <tr><th>Bağımsız Bölüm</th><td id="r_bolum_eski">—</td></tr>
-                <tr><th>Toplam Alan</th><td id="r_alan_eski">—</td></tr>
+                <tr><th>Bağımsız Daire</th><td id="r_konut_eski">—</td></tr>
+                <tr><th>Bağımsız İşyeri</th><td id="r_dukkan_eski">—</td></tr>
                 <tr><th>Yapı Yaşı</th><td id="r_yasi">—</td></tr>
                 <tr><th>Fiziki Durum</th><td id="r_fiziki">—</td></tr>
                 <tr><th>Kullanım</th><td id="r_kullanim">—</td></tr>
@@ -1074,37 +775,35 @@ img { display: block; max-width: 100%; }
                 <tr><th>İmar Durumu</th><td id="r_imar2">—</td></tr>
                 <tr><th>TAKS</th><td id="r_taks">—</td></tr>
                 <tr><th>KAKS / Emsal</th><td id="r_kaks">—</td></tr>
-                <tr><th>Maks. Kat</th><td id="r_maks_kat">—</td></tr>
+                <tr><th>İlave İmar (Emsal Dışı)</th><td id="r_emsal_disi">—</td></tr>
+                <tr><th>Maks. Kat</th><td id="r_maxkat">—</td></tr>
                 <tr><th>Brüt İnşaat Alanı</th><td id="r_brut">—</td></tr>
-                <tr><th>Net Satılabilir Alan</th><td id="r_net">—</td></tr>
-                <tr><th>Yapılaşma Şartları</th><td id="r_sartlar">—</td></tr>
-                <tr><th>Kısıtlamalar</th><td id="r_kisitlamalar">—</td></tr>
+                <tr><th>Yapılaşma Şartları</th><td id="r_yap_sart">—</td></tr>
+                <tr><th>Kısıtlamalar</th><td id="r_kisit">—</td></tr>
               </table>
             </div>
           </div>
         </div>
 
-        <!-- KARŞILAŞTIRMALI ÖZET -->
-        <div class="report-grid-full">
-          <div class="card">
-            <div class="card-header">
-              <div class="card-header-icon" style="background:var(--color-primary-light);color:var(--color-primary)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
-              <div><h2>4. Karşılaştırmalı Özet</h2></div>
-            </div>
-            <div class="card-body" style="padding:0">
-              <table class="compare-table">
-                <thead><tr><th>Kriter</th><th>Mevcut</th><th>Yeni Proje</th><th>Fark</th></tr></thead>
-                <tbody id="r_compare"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- YENİ PROJE DAĞILIM -->
+        <!-- BÖLÜM 2: KARŞILAŞTIRMA + YENİ PROJE -->
         <div class="report-grid-2">
           <div class="card">
             <div class="card-header">
               <div class="card-header-icon" style="background:var(--color-success-light);color:var(--color-success)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg></div>
+              <div><h2>4. Karşılaştırmalı Özet</h2></div>
+            </div>
+            <div class="card-body" style="padding:0">
+              <table class="compare-table">
+                <thead>
+                  <tr><th>Kriter</th><th>Mevcut</th><th>Yeni Proje</th><th>Fark</th></tr>
+                </thead>
+                <tbody id="r_compare_body"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-icon" style="background:var(--color-primary-light);color:var(--color-primary)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
               <div><h2>5. Yeni Proje — Bölüm Dağılımı</h2></div>
             </div>
             <div class="card-body" style="padding:0">
@@ -1120,47 +819,42 @@ img { display: block; max-width: 100%; }
               </table>
             </div>
           </div>
-          <div class="card">
-            <div class="card-header">
-              <div class="card-header-icon" style="background:var(--color-success-light);color:var(--color-success)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-              <div><h2>6. Mali Analiz</h2></div>
+        </div>
+
+        <!-- BÖLÜM 3: MALİ ANALİZ -->
+        <div class="card report-grid-full">
+          <div class="card-header">
+            <div class="card-header-icon" style="background:var(--color-success-light);color:var(--color-success)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <div><h2>6. Mali Analiz & Paylaşım Modeli</h2></div>
+          </div>
+          <div class="card-body">
+            <div class="share-bar" id="r_share_bar">
+              <div class="share-bar-seg owner" id="r_bar_owner" style="width:50%">Arsa Sahibi %50</div>
+              <div class="share-bar-seg contractor" id="r_bar_contractor" style="width:50%">Yüklenici %50</div>
             </div>
-            <div class="card-body" style="padding:0">
-              <table class="info-table">
-                <tr><th>Arsa Sahibi Payı</th><td id="r_malik_pct">—</td></tr>
-                <tr><th>Yüklenici Payı</th><td id="r_yuklenici_pct">—</td></tr>
-                <tr><th>Arsa Sahibi (m²)</th><td id="r_malik_m2">—</td></tr>
-                <tr><th>Yüklenici (m²)</th><td id="r_yuklenici_m2">—</td></tr>
-                <tr><th>Birim Maliyet</th><td id="r_birim_maliyet">—</td></tr>
-                <tr><th>Toplam Maliyet</th><td id="r_toplam_maliyet">—</td></tr>
-                <tr><th>Satış Fiyatı / m²</th><td id="r_satis_fiyati">—</td></tr>
-                <tr><th>Toplam Gelir</th><td id="r_satis_gelir">—</td></tr>
-              </table>
-            </div>
-            <div class="card-body" style="border-top:1px solid var(--color-divider)">
-              <div class="share-bar" id="r_share_bar">
-                <div class="share-bar-seg owner" style="width:50%">Arsa Sahibi %50</div>
-                <div class="share-bar-seg contractor" style="width:50%">Yüklenici %50</div>
-              </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--space-4);margin-top:var(--space-4)" id="r_mali_grid"></div>
+            <div id="r_kd_not_section" style="margin-top:var(--space-6);display:none">
+              <div class="section-tag">Kentsel Dönüşüm Notları</div>
+              <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-top:var(--space-2)" id="r_kd_not"></p>
             </div>
           </div>
         </div>
 
-        <!-- NOTLAR -->
-        <div class="report-grid-full" id="r_notes_section" style="display:none">
-          <div class="card">
-            <div class="card-header">
-              <div class="card-header-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-              <div><h2>7. Notlar</h2></div>
-            </div>
-            <div class="card-body">
-              <p id="r_mevcut_not" style="font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.7"></p>
-              <p id="r_kd_not" style="font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.7;margin-top:var(--space-3)"></p>
-            </div>
-          </div>
+        <!-- ALT KPI (ÖZET) -->
+        <div class="kpi-grid" id="r_kpis_bottom" style="margin-bottom:var(--space-6)"></div>
+
+        <!-- RAPOR ALT BİLGİ -->
+        <div style="text-align:center;padding:var(--space-6);color:var(--color-text-faint);font-size:var(--text-xs);border-top:1px solid var(--color-divider);margin-top:var(--space-4)" id="r_footer"></div>
+
+        <div class="btn-group no-print" style="justify-content:center;margin-top:var(--space-6)">
+          <button class="btn btn-secondary" onclick="switchView('form', document.querySelector('.sidebar-item'))">← Düzenle</button>
+          <button class="btn btn-primary" onclick="printReport()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            PDF / Yazdır
+          </button>
         </div>
 
-      </div><!-- end report-output -->
+      </div>
     </div><!-- end view-report -->
 
   </main>
@@ -1168,353 +862,233 @@ img { display: block; max-width: 100%; }
 
 <script>
 // ===== THEME TOGGLE =====
-document.querySelector('[data-theme-toggle]').addEventListener('click', () => {
-  const html = document.documentElement;
-  html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-});
+(function(){
+  const t = document.querySelector("[data-theme-toggle]");
+  const r = document.documentElement;
+  let d = matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light";
+  r.setAttribute("data-theme", d);
+  if(t) t.addEventListener("click", () => {
+    d = d === "dark" ? "light" : "dark";
+    r.setAttribute("data-theme", d);
+  });
+})();
 
-// ===== MOBILE SIDEBAR =====
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sidebar-overlay').classList.toggle('open');
-}
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebar-overlay').classList.remove('open');
-}
+// Set today's date
+document.getElementById("f_tarih").value = new Date().toISOString().split("T")[0];
 
-// ===== VIEW SWITCH =====
+// ===== VIEW SWITCHER =====
 function switchView(viewId, btn) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById('view-' + viewId).classList.add('active');
-  document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  closeSidebar();
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  document.getElementById("view-" + viewId).classList.add("active");
+  document.querySelectorAll(".sidebar-item").forEach(b => b.classList.remove("active"));
+  if(btn) btn.classList.add("active");
 }
 
-// ===== TAB SWITCH =====
-const TAB_IDS = ['tab-genel','tab-mevcut','tab-imar','tab-yeni','tab-mali'];
-let currentTabIndex = 0;
-
+// ===== TAB SWITCHER =====
 function switchTab(tabId, btn) {
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active');
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  currentTabIndex = TAB_IDS.indexOf(tabId);
-  updateProgressSteps(currentTabIndex);
-}
-
-// ===== PROGRESS BAR =====
-const REQUIRED_FIELDS = {
-  0: ['f_proje_adi','f_adres','f_il_ilce','f_arsa_alani','f_firma'],
-  1: ['f_yapi_turu'],
-  2: ['f_imar_durumu','f_taks','f_kaks'],
-  3: ['f_kat_yeni','f_daire_yeni'],
-  4: ['f_malik_pct','f_birim_maliyet','f_satis_fiyati']
-};
-
-function getTabFilled(tabIdx) {
-  const fields = REQUIRED_FIELDS[tabIdx];
-  if (!fields) return false;
-  return fields.every(id => {
-    const el = document.getElementById(id);
-    return el && el.value.trim() !== '';
-  });
-}
-
-function updateProgress() {
-  let filled = 0;
-  for (let i = 0; i < 5; i++) {
-    if (getTabFilled(i)) filled++;
-  }
-  const pct = Math.round((filled / 5) * 100);
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-pct').textContent = '%' + pct;
-
-  // Update tab checkmarks
-  document.querySelectorAll('.tab-btn').forEach((btn, i) => {
-    const check = btn.querySelector('.tab-check');
-    if (getTabFilled(i)) {
-      check.textContent = '✓';
-      btn.classList.add('tab-complete');
-    } else {
-      check.textContent = '–';
-      btn.classList.remove('tab-complete');
-    }
-  });
-
-  updateProgressSteps(currentTabIndex);
-}
-
-function updateProgressSteps(activeIdx) {
-  for (let i = 0; i < 5; i++) {
-    const step = document.getElementById('pstep-' + i);
-    step.classList.remove('active','done');
-    if (i === activeIdx) step.classList.add('active');
-    else if (getTabFilled(i)) step.classList.add('done');
-  }
-}
-
-// ===== VALIDATION =====
-function onFieldInput(el) {
-  if (el.value.trim() !== '') {
-    el.classList.remove('invalid');
-    el.classList.add('valid');
-    const errEl = document.getElementById('err_' + el.id.replace('f_',''));
-    if (errEl) errEl.style.display = 'none';
-  }
-}
-
-function validateTab(tabIdx) {
-  const fields = REQUIRED_FIELDS[tabIdx] || [];
-  let valid = true;
-  fields.forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    if (!el.value.trim()) {
-      el.classList.add('invalid');
-      el.classList.remove('valid');
-      valid = false;
-    }
-  });
-  if (!valid) {
-    showToast('Lütfen zorunlu alanları doldurun.', 'error');
-  }
-  return valid;
-}
-
-function nextTab(fromIdx) {
-  if (!validateTab(fromIdx)) return;
-  const nextIdx = fromIdx + 1;
-  if (nextIdx < TAB_IDS.length) {
-    switchTab(TAB_IDS[nextIdx], document.querySelectorAll('.tab-btn')[nextIdx]);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-}
-
-// ===== AUTO-CALC: İMAR =====
-function autoCalcImar() {
-  const arsa = parseFloat(document.getElementById('f_arsa_alani').value) || 0;
-  const kaks = parseFloat(document.getElementById('f_kaks').value) || 0;
-  const brut = arsa > 0 && kaks > 0 ? Math.round(arsa * kaks) : null;
-  const net  = brut ? Math.round(brut * 0.75) : null;
-
-  const brutEl = document.getElementById('f_brut_alan');
-  const netEl  = document.getElementById('f_net_alan');
-  if (brut) {
-    brutEl.value = brut;
-    netEl.value  = net;
-  } else {
-    brutEl.value = '';
-    netEl.value  = '';
-  }
-  calcShare();
-  calcFinance();
-}
-
-// ===== AUTO-CALC: PAYLAR =====
-function calcShare() {
-  const malikPct  = parseFloat(document.getElementById('f_malik_pct').value) || 0;
-  const yukPct    = parseFloat(document.getElementById('f_yuklenici_pct').value) || 0;
-  const net       = parseFloat(document.getElementById('f_net_alan').value) || 0;
-
-  // Auto-fill yüklenici if malik given and total = 100
-  if (malikPct > 0 && !document.getElementById('f_yuklenici_pct').value) {
-    document.getElementById('f_yuklenici_pct').value = 100 - malikPct;
-  }
-
-  if (net > 0) {
-    document.getElementById('f_malik_m2').value   = Math.round(net * malikPct / 100);
-    document.getElementById('f_yuklenici_m2').value = Math.round(net * (yukPct || (100 - malikPct)) / 100);
-  }
-  calcFinance();
-}
-
-// ===== AUTO-CALC: MALİYET & GELİR =====
-function calcFinance() {
-  const brut      = parseFloat(document.getElementById('f_brut_alan').value) || 0;
-  const birim     = parseFloat(document.getElementById('f_birim_maliyet').value) || 0;
-  const satisFiy  = parseFloat(document.getElementById('f_satis_fiyati').value) || 0;
-  const net       = parseFloat(document.getElementById('f_net_alan').value) || 0;
-
-  if (brut > 0 && birim > 0) {
-    document.getElementById('f_toplam_maliyet').value = Math.round(brut * birim);
-  }
-  if (net > 0 && satisFiy > 0) {
-    document.getElementById('f_satis_gelir').value = Math.round(net * satisFiy);
-  }
+  document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+  document.getElementById(tabId).classList.add("active");
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  if(btn) btn.classList.add("active");
 }
 
 // ===== STATUS SELECT =====
 function selectStatus(el, group) {
-  el.closest('.status-select').querySelectorAll('.status-option').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
-  const map = {'fiziki-durum': 'f_fiziki_durum'};
-  if (map[group]) document.getElementById(map[group]).value = el.textContent;
+  el.closest(".status-select").querySelectorAll(".status-option").forEach(o => o.classList.remove("selected"));
+  el.classList.add("selected");
+  document.getElementById("f_fiziki_durum").value = el.textContent;
 }
 
-// ===== TOAST =====
-function showToast(msg, type = 'info', duration = 3500) {
-  const container = document.getElementById('toast-container');
-  const toast = document.createElement('div');
-  toast.className = 'toast toast-' + type;
-  toast.innerHTML = (type === 'error' ? '⚠ ' : type === 'success' ? '✓ ' : 'ℹ ') + msg;
-  container.appendChild(toast);
-  setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(8px)'; toast.style.transition = 'all 0.3s'; setTimeout(() => toast.remove(), 300); }, duration);
+// ===== AUTO CALC =====
+function calcShare() {
+  const net = parseFloat(document.getElementById("f_alan_net").value) || 0;
+  const mp = parseFloat(document.getElementById("f_malik_pct").value) || 0;
+  const yp = parseFloat(document.getElementById("f_yuklenici_pct").value) || 0;
+  if(net && mp) document.getElementById("f_malik_m2").value = Math.round(net * mp / 100);
+  if(net && yp) document.getElementById("f_yuklenici_m2").value = Math.round(net * yp / 100);
+}
+
+function calcFinance() {
+  const net = parseFloat(document.getElementById("f_alan_net").value) || 0;
+  const sf = parseFloat(document.getElementById("f_satis_fiyati").value) || 0;
+  const bm = parseFloat(document.getElementById("f_birim_maliyet").value) || 0;
+  const tm = parseFloat(document.getElementById("f_toplam_maliyet").value) || 0;
+  if(net && sf) document.getElementById("f_satis_gelir").value = Math.round(net * sf);
+  if(net && bm && !tm) document.getElementById("f_toplam_maliyet").value = Math.round(net * bm);
+}
+
+function calcAreas() {
+  const brut = parseFloat(document.getElementById("f_alan_brut").value) || 0;
+  if(brut) {
+    document.getElementById("f_alan_net").value = Math.round(brut * 0.82);
+  }
+  calcTaksHint();
+}
+
+function calcTaksHint() {
+  const arsa = parseFloat(document.getElementById("f_arsa_alani").value) || 0;
+  const taks = parseFloat(document.getElementById("f_taks").value) || 0;
+  const hint = document.getElementById("taks_hint");
+  if(arsa && taks) {
+    hint.textContent = "(Maks. Taban Alanı: " + Math.round(arsa * taks).toLocaleString("tr-TR") + " m²)";
+  } else {
+    hint.textContent = "";
+  }
 }
 
 // ===== FORMAT HELPERS =====
-function fNum(v, suffix = '') {
-  if (!v || v === '—') return '—';
-  const n = parseFloat(v);
-  if (isNaN(n)) return v;
-  return n.toLocaleString('tr-TR') + suffix;
+function fmt(val, suffix="") { return val ? (parseFloat(val).toLocaleString("tr-TR") + suffix) : "—"; }
+function fmtCurrency(val) {
+  if(!val) return "—";
+  const n = parseFloat(val);
+  if(n >= 1e9) return (n/1e9).toFixed(2) + " Milyar ₺";
+  if(n >= 1e6) return (n/1e6).toFixed(2) + " Milyon ₺";
+  return n.toLocaleString("tr-TR") + " ₺";
 }
-function fMoney(v) {
-  if (!v || v === '—') return '—';
-  const n = parseFloat(v);
-  if (isNaN(n)) return '—';
-  if (n >= 1_000_000) return '₺' + (n / 1_000_000).toFixed(2) + ' M';
-  return '₺' + n.toLocaleString('tr-TR');
+function getDiff(newVal, oldVal, suffix="") {
+  const diff = (parseFloat(newVal)||0) - (parseFloat(oldVal)||0);
+  if(!diff) return { text: "—", cls: "" };
+  const sign = diff > 0 ? "+" : "";
+  return { text: sign + diff.toLocaleString("tr-TR") + suffix, cls: diff > 0 ? "diff-pos" : "diff-neg" };
 }
-function fDate(v) {
-  if (!v) return '—';
-  try { return new Date(v).toLocaleDateString('tr-TR', {day:'2-digit',month:'long',year:'numeric'}); } catch { return v; }
-}
-function g(id) { const el = document.getElementById(id); return el ? el.value : ''; }
-function s(id, val) { const el = document.getElementById(id); if (el) el.textContent = val || '—'; }
+function g(id) { return document.getElementById(id)?.value || ""; }
 
 // ===== GENERATE REPORT =====
 function generateReport() {
-  if (!validateTab(4)) return;
+  // Genel
+  const projeAdi = g("f_proje_adi") || "İsimsiz Proje";
+  document.getElementById("r_proje_adi").textContent = projeAdi;
+  document.getElementById("topbar-project-name").textContent = projeAdi;
+  document.getElementById("r_adres_full").textContent = [g("f_adres"), g("f_il_ilce")].filter(Boolean).join(" — ") || "—";
+  document.getElementById("r_ada_parsel").textContent = g("f_ada_parsel") || "—";
+  document.getElementById("r_tarih").textContent = g("f_tarih") ? new Date(g("f_tarih")).toLocaleDateString("tr-TR", {day:"numeric",month:"long",year:"numeric"}) : "—";
+  document.getElementById("r_hazırlayan").textContent = [g("f_firma"), g("f_sorumlu")].filter(Boolean).join(" / ") || "—";
+  document.getElementById("r_footer").textContent = `Bu rapor ${projeAdi} için ${g("f_firma") || ""} tarafından hazırlanmıştır. Rapor tarihi: ${g("f_tarih") ? new Date(g("f_tarih")).toLocaleDateString("tr-TR") : new Date().toLocaleDateString("tr-TR")}.`;
 
-  // Header
-  s('r_proje_adi',   g('f_proje_adi') || 'İsimsiz Proje');
-  s('r_adres_full',  [g('f_adres'), g('f_il_ilce')].filter(Boolean).join(' — '));
-  s('r_ada_parsel',  g('f_ada_parsel'));
-  s('r_tarih',       fDate(g('f_tarih')));
-  s('r_hazırlayan',  [g('f_firma'), g('f_sorumlu')].filter(Boolean).join(' / '));
+  // Proje kimliği kart
+  document.getElementById("r_il_ilce").textContent = g("f_il_ilce") || "—";
+  document.getElementById("r_ada2").textContent = g("f_ada_parsel") || "—";
+  document.getElementById("r_arsa").textContent = fmt(g("f_arsa_alani"), " m²");
+  document.getElementById("r_imar").textContent = g("f_imar_durumu") || g("f_yapi_turu") || "—";
+  document.getElementById("r_firma").textContent = g("f_firma") || "—";
+  document.getElementById("r_sorumlu").textContent = g("f_sorumlu") || "—";
 
-  // Section 1
-  s('r_il_ilce',  g('f_il_ilce'));
-  s('r_ada2',     g('f_ada_parsel'));
-  s('r_arsa',     fNum(g('f_arsa_alani'), ' m²'));
-  s('r_imar',     g('f_imar_durumu'));
-  s('r_firma',    g('f_firma'));
-  s('r_sorumlu',  g('f_sorumlu'));
+  // Mevcut yapı
+  document.getElementById("r_yapi_turu").textContent = g("f_yapi_turu") || "—";
+  document.getElementById("r_bina_sayisi").textContent = g("f_bina_sayisi") ? g("f_bina_sayisi") + " Adet" : "—";
+  document.getElementById("r_kat_eski").textContent = g("f_kat_sayisi_eski") ? g("f_kat_sayisi_eski") + " Kat" : "—";
+  document.getElementById("r_konut_eski").textContent = g("f_konut_eski") ? g("f_konut_eski") + " Adet" : "—";
+  document.getElementById("r_dukkan_eski").textContent = g("f_dukkan_eski") ? g("f_dukkan_eski") + " Adet" : "—";
+  document.getElementById("r_yasi").textContent = g("f_yapi_yasi") ? g("f_yapi_yasi") + " Yıl" : "—";
+  document.getElementById("r_fiziki").textContent = g("f_fiziki_durum") || "—";
+  document.getElementById("r_kullanim").textContent = g("f_kullanim") || "—";
+  document.getElementById("r_deprem").textContent = g("f_deprem") || "—";
 
-  // Section 2
-  s('r_yapi_turu',  g('f_yapi_turu'));
-  s('r_bina_sayisi',g('f_bina_sayisi'));
-  s('r_kat_eski',   g('f_kat_sayisi_eski') ? g('f_kat_sayisi_eski') + ' Kat' : '—');
-  s('r_bolum_eski', g('f_bolum_eski') ? g('f_bolum_eski') + ' Bölüm' : '—');
-  s('r_alan_eski',  fNum(g('f_alan_eski'), ' m²'));
-  s('r_yasi',       g('f_yapi_yasi') ? g('f_yapi_yasi') + ' Yıl' : '—');
-  s('r_fiziki',     g('f_fiziki_durum'));
-  s('r_kullanim',   g('f_kullanim'));
-  s('r_deprem',     g('f_deprem'));
+  // İmar
+  document.getElementById("r_imar2").textContent = g("f_imar_durumu") || "—";
+  document.getElementById("r_taks").textContent = g("f_taks") || "—";
+  document.getElementById("r_kaks").textContent = g("f_kaks") || "—";
+  document.getElementById("r_maxkat").textContent = g("f_max_kat") || "—";
+  document.getElementById("r_brut").textContent = fmt(g("f_alan_brut"), " m²");
+  document.getElementById("r_yap_sart").textContent = g("f_yap_sartlari") || "—";
+  document.getElementById("r_kisit").textContent = g("f_kisitlamalar") || "Yok";
+  document.getElementById("r_emsal_disi").textContent = g("f_emsal_disi") ? fmt(g("f_emsal_disi"), " m²") : "—";
 
-  // Section 3
-  s('r_imar2',   g('f_imar_durumu'));
-  s('r_taks',    g('f_taks'));
-  s('r_kaks',    g('f_kaks'));
-  s('r_maks_kat',g('f_maks_kat') ? g('f_maks_kat') + ' Kat' : '—');
-  s('r_brut',    fNum(g('f_brut_alan'), ' m²'));
-  s('r_net',     fNum(g('f_net_alan'), ' m²'));
-  s('r_sartlar', g('f_yapilanma_sartlari') || '—');
-  s('r_kisitlamalar', g('f_kisitlamalar') || 'Yok');
+  // Yeni proje
+  document.getElementById("r_kat_yeni").textContent = g("f_kat_yeni") ? g("f_kat_yeni") + " Kat" : "—";
+  document.getElementById("r_daire_yeni").textContent = g("f_daire_yeni") ? g("f_daire_yeni") + " Adet" : "—";
+  document.getElementById("r_1p1").textContent = g("f_1p1") ? g("f_1p1") + " Adet" : "—";
+  document.getElementById("r_2p1").textContent = g("f_2p1") ? g("f_2p1") + " Adet" : "—";
+  document.getElementById("r_3p1").textContent = g("f_3p1") ? g("f_3p1") + " Adet" : "—";
+  document.getElementById("r_4p1").textContent = g("f_4p1") ? g("f_4p1") + " Adet" : (g("f_4p1") === "0" ? "Yok" : "—");
+  document.getElementById("r_ticari_yeni").textContent = g("f_ticari_yeni") ? g("f_ticari_yeni") + " Adet" : "—";
+  document.getElementById("r_otopark").textContent = g("f_otopark") ? g("f_otopark") + " Araç — " + (g("f_otopark_tipi") || "") : "—";
 
-  // Section 4 - Karşılaştırma
-  const compareData = [
-    ['Bağımsız Bölüm', g('f_bolum_eski'), g('f_daire_yeni'), null, 'adet'],
-    ['İnşaat Alanı', g('f_alan_eski'), g('f_brut_alan'), null, 'm²'],
-    ['Kat Sayısı', g('f_kat_sayisi_eski'), g('f_kat_yeni'), null, 'kat'],
+  // KPI CARDS
+  const netAlan = parseFloat(g("f_alan_net")) || 0;
+  const topMaliyet = parseFloat(g("f_toplam_maliyet")) || 0;
+  const kpiData = [
+    { label:"Net Satılabilir Alan", value: fmt(g("f_alan_net"), " m²"), sub:"Brüt × 0.82", cls:"highlight-blue" },
+    { label:"Toplam İnşaat Maliyeti", value: fmtCurrency(g("f_toplam_maliyet")), sub:"Tahmini", cls:"highlight-orange" },
+    { label:"Yüklenici — Daire", value: fmt(g("f_yuklenici_daire"), " Adet"), sub:"Payına düşen", cls:"" },
+    { label:"Yüklenici — İşyeri", value: fmt(g("f_yuklenici_isyeri"), " Adet"), sub:"Payına düşen", cls:"" },
   ];
-  const tbody = document.getElementById('r_compare');
-  tbody.innerHTML = '';
-  compareData.forEach(([label, eski, yeni, , suffix]) => {
-    const eVal = parseFloat(eski) || 0;
-    const yVal = parseFloat(yeni) || 0;
-    const diff = yVal - eVal;
-    const diffStr = diff !== 0 ? (diff > 0 ? '+' : '') + diff.toLocaleString('tr-TR') + ' ' + suffix : '—';
-    const cls = diff > 0 ? 'diff-pos' : diff < 0 ? 'diff-neg' : '';
-    tbody.innerHTML += `<tr>
-      <td>${label}</td>
-      <td>${eVal ? eVal.toLocaleString('tr-TR') + ' ' + suffix : '—'}</td>
-      <td>${yVal ? yVal.toLocaleString('tr-TR') + ' ' + suffix : '—'}</td>
-      <td class="${cls}">${diffStr}</td>
-    </tr>`;
-  });
+  document.getElementById("r_kpis").innerHTML = kpiData.map(k => `
+    <div class="kpi-card ${k.cls}">
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-value">${k.value}</div>
+      <div class="kpi-sub">${k.sub}</div>
+    </div>`).join("");
 
-  // Section 5 - Yeni Proje
-  s('r_kat_yeni',    g('f_kat_yeni') ? g('f_kat_yeni') + ' Kat' : '—');
-  s('r_daire_yeni',  g('f_daire_yeni') ? g('f_daire_yeni') + ' Adet' : '—');
-  s('r_1p1',         g('f_1p1') ? g('f_1p1') + ' Adet' : '—');
-  s('r_2p1',         g('f_2p1') ? g('f_2p1') + ' Adet' : '—');
-  s('r_3p1',         g('f_3p1') ? g('f_3p1') + ' Adet' : '—');
-  s('r_4p1',         g('f_4p1') ? g('f_4p1') + ' Adet' : '—');
-  s('r_ticari_yeni', g('f_ticari_yeni') ? g('f_ticari_yeni') + ' Adet' : '—');
-  s('r_otopark',     g('f_otopark') ? g('f_otopark') + ' Araç (' + g('f_otopark_tipi') + ')' : '—');
+  // KARŞILAŞTIRMA TABLOSU
+  const rows = [
+    ["Kat Sayısı", g("f_kat_sayisi_eski") ? g("f_kat_sayisi_eski")+" Kat" : "—", g("f_kat_yeni") ? g("f_kat_yeni")+" Kat" : "—", getDiff(g("f_kat_yeni"), g("f_kat_sayisi_eski"), " Kat")],
+    ["Bağımsız Bölüm", g("f_bolum_eski") ? g("f_bolum_eski")+" Adet" : "—", g("f_daire_yeni") ? g("f_daire_yeni")+" Adet" : "—", getDiff(g("f_daire_yeni"), g("f_bolum_eski"), " Adet")],
+    ["İnşaat Alanı (m²)", fmt(g("f_alan_eski"), " m²"), fmt(g("f_alan_brut"), " m²"), getDiff(g("f_alan_brut"), g("f_alan_eski"), " m²")],
+    ["Otopark", "Yok", g("f_otopark") ? g("f_otopark")+" Araç" : "—", { text: g("f_otopark") ? "+" + g("f_otopark") + " Araç" : "—", cls: "diff-pos" }],
+  ];
+  document.getElementById("r_compare_body").innerHTML = rows.map(r =>
+    `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td class="${r[3].cls}">${r[3].text}</td></tr>`
+  ).join("");
 
-  // Section 6 - Mali
-  const malikPct = parseFloat(g('f_malik_pct')) || 0;
-  const yukPct   = parseFloat(g('f_yuklenici_pct')) || (100 - malikPct);
-  s('r_malik_pct',      '%' + malikPct);
-  s('r_yuklenici_pct',  '%' + yukPct);
-  s('r_malik_m2',       fNum(g('f_malik_m2'), ' m²'));
-  s('r_yuklenici_m2',   fNum(g('f_yuklenici_m2'), ' m²'));
-  s('r_birim_maliyet',  fMoney(g('f_birim_maliyet')) + '/m²');
-  s('r_toplam_maliyet', fMoney(g('f_toplam_maliyet')));
-  s('r_satis_fiyati',   fMoney(g('f_satis_fiyati')) + '/m²');
-  s('r_satis_gelir',    fMoney(g('f_satis_gelir')));
+  // MALİ ANALİZ
+  const mp = parseFloat(g("f_malik_pct")) || 50;
+  const yp = parseFloat(g("f_yuklenici_pct")) || 50;
+  document.getElementById("r_bar_owner").style.width = mp + "%";
+  document.getElementById("r_bar_owner").textContent = "Arsa Sahibi %" + mp;
+  document.getElementById("r_bar_contractor").style.width = yp + "%";
+  document.getElementById("r_bar_contractor").textContent = "Yüklenici %" + yp;
 
-  // Share bar
-  document.getElementById('r_share_bar').innerHTML = `
-    <div class="share-bar-seg owner" style="width:${malikPct}%">Arsa %${malikPct}</div>
-    <div class="share-bar-seg contractor" style="width:${yukPct}%">Yüklenici %${yukPct}</div>`;
+  const maliGrid = [
+    ["Arsa Sahibi Payı", mp + "% — " + fmt(g("f_malik_m2"), " m²"), "highlight-blue"],
+    ["Yüklenici Payı", yp + "% — " + fmt(g("f_yuklenici_m2"), " m²"), "highlight-orange"],
+    ["Toplam Maliyet", fmtCurrency(g("f_toplam_maliyet")), "highlight-orange"],
+    ["Birim m² Maliyet", fmt(g("f_birim_maliyet"), " ₺/m²"), ""],
+    ["Yüklenici — Daire", fmt(g("f_yuklenici_daire"), " Adet"), "highlight-orange"],
+    ["Yüklenici — İşyeri", fmt(g("f_yuklenici_isyeri"), " Adet"), ""],
+  ];
+  document.getElementById("r_mali_grid").innerHTML = maliGrid.map(m =>
+    `<div class="kpi-card ${m[2]}"><div class="kpi-label">${m[0]}</div><div class="kpi-value" style="font-size:var(--text-base)">${m[1]}</div></div>`
+  ).join("");
 
-  // KPIs
-  const netAlan  = parseFloat(g('f_net_alan'))  || 0;
-  const maliyet  = parseFloat(g('f_toplam_maliyet')) || 0;
-  const gelir    = parseFloat(g('f_satis_gelir')) || 0;
-  const kar      = gelir - maliyet;
-  const karOran  = maliyet > 0 ? ((kar / maliyet) * 100).toFixed(1) : null;
-  document.getElementById('r_kpis').innerHTML = `
-    <div class="kpi-card highlight-blue"><div class="kpi-label">Net Satılabilir Alan</div><div class="kpi-value">${fNum(netAlan, ' m²')}</div><div class="kpi-sub">Brüt × 0.75</div></div>
-    <div class="kpi-card"><div class="kpi-label">Toplam İnşaat Maliyeti</div><div class="kpi-value">${fMoney(maliyet)}</div><div class="kpi-sub">Brüt Alan × Birim Maliyet</div></div>
-    <div class="kpi-card"><div class="kpi-label">Toplam Satış Geliri</div><div class="kpi-value">${fMoney(gelir)}</div><div class="kpi-sub">Net Alan × Satış Fiyatı</div></div>
-    ${kar ? `<div class="kpi-card ${kar > 0 ? 'highlight-green' : 'highlight-orange'}"><div class="kpi-label">Tahmini Kâr</div><div class="kpi-value">${fMoney(kar)}</div><div class="kpi-sub">${karOran ? 'Getiri: %' + karOran : ''}</div></div>` : ''}`;
-
-  // Notes
-  const mevNot = g('f_mevcut_not');
-  const kdNot  = g('f_kd_not');
-  if (mevNot || kdNot) {
-    document.getElementById('r_notes_section').style.display = '';
-    document.getElementById('r_mevcut_not').textContent = mevNot;
-    document.getElementById('r_kd_not').textContent = kdNot;
+  const kdnot = g("f_kd_not");
+  if(kdnot) {
+    document.getElementById("r_kd_not_section").style.display = "block";
+    document.getElementById("r_kd_not").textContent = kdnot;
   }
 
-  // Topbar title
-  document.getElementById('topbar-project-name').textContent = g('f_proje_adi');
+  // NET KAR/ZARAR
+  const gelir = parseFloat(g("f_satis_gelir")) || 0;
+  const maliyet = parseFloat(g("f_toplam_maliyet")) || 0;
+  if(gelir && maliyet) {
+    const kar = gelir - maliyet;
+    const karPct = ((kar/maliyet)*100).toFixed(1);
+    const karEl = document.createElement("div");
+    karEl.style = "margin-top:var(--space-4);padding:var(--space-4);border-radius:var(--radius-md);background:" + (kar >= 0 ? "var(--color-success-light)" : "var(--color-warning-light)") + ";border:1px solid " + (kar >= 0 ? "var(--color-success)" : "var(--color-warning)");
+    karEl.innerHTML = `<span style="font-size:var(--text-xs);font-weight:700;text-transform:uppercase;color:${kar >= 0 ? "var(--color-success)" : "var(--color-warning)"}">Tahmini Net Kar/Zarar</span><br><span style="font-size:var(--text-lg);font-weight:700;color:${kar >= 0 ? "var(--color-success)" : "var(--color-warning)"}">${kar >= 0 ? "+" : ""}${fmtCurrency(kar)} (${karPct > 0 ? "+" : ""}${karPct}%)</span>`;
+    const grid = document.getElementById("r_mali_grid");
+    const existing = grid.parentNode.querySelector(".kar-zarar");
+    if(existing) existing.remove();
+    karEl.className = "kar-zarar";
+    grid.after(karEl);
+  }
 
-  switchView('report', document.querySelectorAll('.sidebar-item')[1]);
-  showToast('Fizibilite raporu başarıyla oluşturuldu!', 'success');
+  // ALT KPI (aynı veriler)
+  document.getElementById("r_kpis_bottom").innerHTML = document.getElementById("r_kpis").innerHTML;
+
+  // SWITCH VIEW
+  switchView("report", document.getElementById("btn-report-nav"));
+  document.getElementById("topbar-project-name").style.display = "block";
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-// ===== PRINT =====
 function printReport() {
-  const reportEl = document.getElementById('view-report');
-  if (!reportEl.classList.contains('active')) {
-    showToast('Önce raporu oluşturun.', 'error');
+  if(!document.getElementById("view-report").classList.contains("active")) {
+    alert("Lütfen önce raporu oluşturun.");
     return;
   }
   window.print();
 }
-
-// ===== INIT =====
-document.getElementById('f_tarih').valueAsDate = new Date();
-updateProgress();
 </script>
 </body>
 </html>

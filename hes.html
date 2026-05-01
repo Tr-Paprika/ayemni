@@ -1,0 +1,1271 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kentsel Dönüşüm Maliyet ve Fizibilite Analizi</title>
+<style>
+:root{
+  --bg:#eef3f8;
+  --bg2:#f8fafc;
+  --card:#ffffff;
+  --ink:#0f172a;
+  --muted:#64748b;
+  --line:#d9e2ef;
+  --line2:#eef2f7;
+  --primary:#12366f;
+  --primary2:#2563eb;
+  --accent:#0f766e;
+  --accent2:#14b8a6;
+  --success:#047857;
+  --danger:#b91c1c;
+  --warning:#b45309;
+  --soft-blue:#eef6ff;
+  --soft-green:#ecfdf5;
+  --soft-red:#fef2f2;
+  --soft-yellow:#fffbeb;
+  --shadow:0 18px 45px rgba(15,23,42,.10);
+  --shadow2:0 10px 24px rgba(15,23,42,.08);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at top left,rgba(20,184,166,.16),transparent 30rem),
+    radial-gradient(circle at top right,rgba(37,99,235,.13),transparent 35rem),
+    var(--bg);
+  color:var(--ink);
+  font-family:"Segoe UI",Roboto,Arial,sans-serif;
+  line-height:1.45;
+}
+button,input,select,textarea{font:inherit}
+button{border:0}
+.app-header{
+  color:#fff;
+  background:
+    linear-gradient(135deg,rgba(9,25,53,.96),rgba(18,54,111,.96) 54%,rgba(15,118,110,.94)),
+    linear-gradient(45deg,#12366f,#0f766e);
+  padding:26px 18px 30px;
+}
+.header-inner{
+  max-width:1480px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:20px;
+  align-items:end;
+}
+.eyebrow{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding:6px 10px;
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:999px;
+  background:rgba(255,255,255,.10);
+  backdrop-filter:blur(10px);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.02em;
+}
+.app-header h1{
+  margin:14px 0 8px;
+  font-size:clamp(25px,3vw,42px);
+  line-height:1.06;
+  letter-spacing:-.04em;
+}
+.app-header p{
+  margin:0;
+  max-width:880px;
+  color:rgba(255,255,255,.86);
+  font-size:15px;
+}
+.toolbar{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-height:40px;
+  border-radius:13px;
+  padding:10px 13px;
+  color:#0f2548;
+  background:#fff;
+  border:1px solid rgba(15,23,42,.08);
+  box-shadow:0 8px 20px rgba(0,0,0,.08);
+  font-weight:800;
+  cursor:pointer;
+  transition:.18s ease;
+  white-space:nowrap;
+}
+.btn:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(0,0,0,.12)}
+.btn:active{transform:translateY(0)}
+.btn.primary{background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff}
+.btn.blue{background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff}
+.btn.danger{background:#fee2e2;color:#991b1b;box-shadow:none}
+.btn.soft{background:#f8fbff;color:var(--primary);border:1px solid #dbeafe;box-shadow:none}
+.btn.ghost{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.25)}
+main{
+  width:min(1480px,calc(100% - 28px));
+  margin:-18px auto 40px;
+}
+.summary-card{
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(255,255,255,.80);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:16px;
+  backdrop-filter:blur(14px);
+}
+.summary-head{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+  margin-bottom:13px;
+}
+.summary-head h2{margin:0;color:var(--primary);font-size:18px}
+.summary-head p{margin:3px 0 0;color:var(--muted);font-size:13px}
+.last-saved{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:800;
+  text-align:right;
+}
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(140px,1fr));
+  gap:10px;
+}
+.kpi{
+  position:relative;
+  overflow:hidden;
+  min-height:104px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:linear-gradient(180deg,#fff,#f8fafc);
+  padding:14px;
+}
+.kpi:before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto auto;
+  width:82px;
+  height:82px;
+  transform:translate(26px,-26px);
+  border-radius:50%;
+  background:rgba(37,99,235,.08);
+}
+.kpi small{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+.kpi b{
+  position:relative;
+  display:block;
+  margin-top:10px;
+  font-size:clamp(18px,1.65vw,25px);
+  letter-spacing:-.03em;
+  white-space:nowrap;
+}
+.kpi span{
+  display:block;
+  margin-top:6px;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+}
+.good{color:var(--success)!important}
+.bad{color:var(--danger)!important}
+.warn{color:var(--warning)!important}
+.tabs{
+  position:sticky;
+  top:0;
+  z-index:20;
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  padding:12px 0;
+  margin:10px 0 0;
+  background:linear-gradient(180deg,rgba(238,243,248,.98),rgba(238,243,248,.86));
+  backdrop-filter:blur(10px);
+}
+.tab-btn{
+  border-radius:999px;
+  padding:10px 14px;
+  background:#fff;
+  color:var(--primary);
+  border:1px solid var(--line);
+  box-shadow:0 6px 18px rgba(15,23,42,.06);
+  font-weight:900;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.tab-btn.active{
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  color:#fff;
+  border-color:transparent;
+}
+.tab-page{display:none}
+.tab-page.active{display:block}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow2);
+  padding:16px;
+  margin:0 0 16px;
+}
+.card-title{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+  margin-bottom:14px;
+}
+.card-title h2{
+  margin:0;
+  color:var(--primary);
+  font-size:18px;
+  letter-spacing:-.015em;
+}
+.card-title p{
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:13px;
+}
+.title-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(135px,1fr));
+  gap:11px;
+}
+.form-label{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  color:#475569;
+  font-size:12px;
+  font-weight:900;
+}
+input,select,textarea{
+  width:100%;
+  min-height:38px;
+  border:1px solid #cbd5e1;
+  border-radius:12px;
+  padding:9px 10px;
+  color:var(--ink);
+  background:#fff;
+  outline:none;
+  font-size:13px;
+  transition:border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:#60a5fa;
+  box-shadow:0 0 0 4px rgba(96,165,250,.18);
+}
+input[type=number]{text-align:right}
+input::placeholder{color:#94a3b8}
+.split{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  align-items:start;
+}
+.report-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);
+  gap:16px;
+}
+.table-wrap{
+  overflow:auto;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#fff;
+}
+table{
+  width:100%;
+  min-width:990px;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:13px;
+}
+th,td{
+  border-bottom:1px solid var(--line2);
+  padding:8px;
+  text-align:left;
+  vertical-align:middle;
+}
+th{
+  position:sticky;
+  top:0;
+  z-index:1;
+  background:#f8fafc;
+  color:#334155;
+  font-size:12px;
+  font-weight:900;
+}
+tbody tr:hover td{background:#fbfdff}
+tfoot td{
+  background:#f8fafc;
+  font-weight:900;
+  border-bottom:0;
+}
+.num{text-align:right;white-space:nowrap}
+.row-actions{display:flex;gap:6px}
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:11px;
+}
+.note{
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:linear-gradient(180deg,#fff,#f8fafc);
+  padding:15px;
+}
+.note h3{margin:0 0 9px;color:var(--primary);font-size:15px}
+.note ul{margin:8px 0 0 18px;padding:0;line-height:1.6;color:#334155}
+.metric{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  border-bottom:1px dashed #d8e1ef;
+  padding:9px 0;
+}
+.metric:last-child{border-bottom:0}
+.metric span{color:#475569}
+.metric b{text-align:right}
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border-radius:999px;
+  padding:6px 10px;
+  font-size:12px;
+  font-weight:900;
+  background:#e0f2fe;
+  color:#075985;
+  white-space:nowrap;
+}
+.pill.good{background:#dcfce7;color:#166534}
+.pill.warn{background:#fef3c7;color:#92400e}
+.pill.bad{background:#fee2e2;color:#991b1b}
+.pill.neutral{background:#eef2ff;color:#3730a3}
+.helper{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:11px;
+}
+.helper-box{
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:#fbfdff;
+  padding:14px;
+}
+.helper-box b{display:block;color:var(--primary);margin-bottom:5px}
+.helper-box p{margin:0;color:var(--muted);font-size:13px}
+.status-line{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+.foot{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.55;
+  margin-top:10px;
+}
+.print-title{display:none}
+.toast{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:99;
+  display:none;
+  max-width:min(420px,calc(100% - 36px));
+  padding:12px 14px;
+  border-radius:16px;
+  color:#fff;
+  background:#0f172a;
+  box-shadow:var(--shadow);
+  font-weight:800;
+}
+.toast.show{display:block;animation:pop .22s ease}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.empty-hint{
+  color:var(--muted);
+  font-size:13px;
+  margin:8px 0 0;
+}
+@media(max-width:1250px){
+  .header-inner{grid-template-columns:1fr}
+  .toolbar{justify-content:flex-start}
+  .kpi-grid{grid-template-columns:repeat(3,1fr)}
+  .grid{grid-template-columns:repeat(3,1fr)}
+  .split,.report-grid{grid-template-columns:1fr}
+  .helper{grid-template-columns:1fr}
+}
+@media(max-width:720px){
+  main{width:min(100% - 18px,1480px)}
+  .app-header{padding:20px 10px 28px}
+  .toolbar .btn{width:100%;justify-content:center}
+  .summary-head{display:block}
+  .last-saved{text-align:left;margin-top:8px}
+  .kpi-grid,.grid{grid-template-columns:1fr}
+  .card,.summary-card{border-radius:18px;padding:13px}
+  table{min-width:900px}
+  .tabs{margin-left:-2px;margin-right:-2px}
+}
+@media print{
+  @page{size:A4 landscape;margin:8mm}
+  body{background:#fff;color:#111}
+  .app-header,.no-print,.tabs,.actions,.title-actions,button,.toast{display:none!important}
+  main{width:100%;margin:0}
+  .print-title{display:block;border-bottom:2px solid #111;padding-bottom:6px;margin-bottom:10px}
+  .print-title h1{margin:0;font-size:18pt}
+  .print-title p{margin:4px 0 0;font-size:10pt;color:#374151}
+  .summary-card,.card{
+    box-shadow:none;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    padding:9px;
+    margin-bottom:9px;
+    break-inside:avoid;
+  }
+  .tab-page{display:block!important}
+  .split,.report-grid{grid-template-columns:1fr}
+  .kpi-grid{grid-template-columns:repeat(3,1fr);gap:6px}
+  .kpi{min-height:auto;padding:8px;border-radius:8px}
+  .kpi b{font-size:13pt}
+  .grid{grid-template-columns:repeat(3,1fr)}
+  table{font-size:8pt;min-width:0}
+  th{position:static}
+  th,td{padding:4px}
+  input,select,textarea{
+    border:0;
+    padding:0;
+    min-height:0;
+    background:transparent;
+    appearance:none;
+    box-shadow:none;
+    font-size:8pt;
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="app-header no-print">
+  <div class="header-inner">
+    <div>
+      <span class="eyebrow">🏗️ Kentsel dönüşüm fizibilite aracı</span>
+      <h1>İnşaat maliyet, gelir ve hakediş analizini tek ekranda yönetin.</h1>
+      <p>Malik ilave bedelleri, devlet / kentsel dönüşüm hakedişleri, satış gelirleri, inşaat maliyetleri, risk senaryoları ve PDF rapor çıktısı için kullanıcı dostu, tek dosyalık analiz paneli.</p>
+      <div class="status-line">
+        <span class="pill neutral" id="overallStatus">Veri bekleniyor</span>
+        <span class="pill" id="lastSaved">Yerel kayıt hazır</span>
+      </div>
+    </div>
+    <div class="toolbar">
+      <button class="btn primary" onclick="window.print()">PDF / Yazdır</button>
+      <button class="btn" onclick="save(true)">Kaydet</button>
+      <button class="btn" onclick="exportJSON()">Yedek Al</button>
+      <button class="btn" onclick="document.getElementById('file').click()">Yedek Yükle</button>
+      <button class="btn ghost" onclick="sample()">Örnek Veri</button>
+      <button class="btn danger" onclick="resetAll()">Sıfırla</button>
+      <input id="file" type="file" accept="application/json" style="display:none" onchange="importJSON(event)">
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="print-title">
+    <h1>Kentsel Dönüşüm Fizibilite ve Maliyet Analiz Raporu</h1>
+    <p id="printSub"></p>
+  </div>
+
+  <section class="summary-card">
+    <div class="summary-head">
+      <div>
+        <h2>Yönetici Özeti</h2>
+        <p>Gelir, maliyet, net kalan, marj ve başabaş değerleri otomatik hesaplanır.</p>
+      </div>
+      <div class="last-saved" id="summaryHint">Tabloları doldurmaya başlayın.</div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi"><small>Malik Tahsilatı</small><b id="sOwner">₺0</b><span>Taksit toplamı</span></div>
+      <div class="kpi"><small>Devlet / Hakediş</small><b id="sGov">₺0</b><span>Planlanan giriş</span></div>
+      <div class="kpi"><small>Satış Geliri</small><b id="sSales">₺0</b><span>Satılabilir alan</span></div>
+      <div class="kpi"><small>Toplam Maliyet</small><b id="sCost">₺0</b><span>Güncel bütçe</span></div>
+      <div class="kpi"><small>Net Kalan / Kâr</small><b id="sProfit">₺0</b><span id="sMargin">—</span></div>
+      <div class="kpi"><small>Başabaş Satış</small><b id="sBreakEven">—</b><span id="sM2Cost">m² maliyet: —</span></div>
+    </div>
+  </section>
+
+  <nav class="tabs no-print" aria-label="Analiz bölümleri">
+    <button class="tab-btn active" onclick="showTab('project',this)">1. Proje</button>
+    <button class="tab-btn" onclick="showTab('income',this)">2. Gelirler</button>
+    <button class="tab-btn" onclick="showTab('cost',this)">3. Maliyetler</button>
+    <button class="tab-btn" onclick="showTab('cash',this)">4. Nakit & Risk</button>
+    <button class="tab-btn" onclick="showTab('report',this)">5. Analist Raporu</button>
+  </nav>
+
+  <section id="tab-project" class="tab-page active">
+    <section class="card">
+      <div class="card-title">
+        <div>
+          <h2>1) Proje Bilgileri</h2>
+          <p>Rapor başlığı, yüklenici bilgisi, adres, inşaat alanı ve satılabilir alan varsayımları.</p>
+        </div>
+      </div>
+      <div class="grid">
+        <label class="form-label">Proje Adı <input data-p="name" placeholder="Örn. Merkez Mah. Kentsel Dönüşüm"></label>
+        <label class="form-label">Yüklenici / Firma <input data-p="company" placeholder="Firma adı"></label>
+        <label class="form-label">Ada / Parsel / Adres <input data-p="parcel" placeholder="Ada, parsel, mahalle"></label>
+        <label class="form-label">Rapor Tarihi <input data-p="date" type="date"></label>
+        <label class="form-label">Toplam İnşaat Alanı m² <input data-p="buildArea" type="number" min="0" step="0.01" placeholder="0"></label>
+        <label class="form-label">Satılabilir Alan m² <input data-p="saleArea" type="number" min="0" step="0.01" placeholder="0"></label>
+      </div>
+    </section>
+
+    <section class="card no-print">
+      <div class="card-title">
+        <div>
+          <h2>Hızlı Kullanım</h2>
+          <p>Veri girişini hızlandıran kısa yollar.</p>
+        </div>
+      </div>
+      <div class="helper">
+        <div class="helper-box">
+          <b>1. Gelirleri girin</b>
+          <p>Malik ilave bedellerini, hakedişleri ve müteahhit payı satışlarını ekleyin.</p>
+        </div>
+        <div class="helper-box">
+          <b>2. Maliyetleri tamamlayın</b>
+          <p>Şablonu kullanın, boş miktarları inşaat m² ile doldurun ve birim maliyetleri girin.</p>
+        </div>
+        <div class="helper-box">
+          <b>3. Raporu alın</b>
+          <p>Nakit akışı, risk senaryoları ve analist notunu kontrol edip PDF çıktısı alın.</p>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn soft" onclick="showTab('income')">Gelirleri Düzenle</button>
+        <button class="btn soft" onclick="showTab('cost')">Maliyetleri Düzenle</button>
+        <button class="btn blue" onclick="showTab('report')">Raporu Gör</button>
+      </div>
+    </section>
+  </section>
+
+  <section id="tab-income" class="tab-page">
+    <div class="split">
+      <section class="card">
+        <div class="card-title">
+          <div>
+            <h2>2) Maliklerden Alınacak İlave Bedeller</h2>
+            <p>Mesken ve iş yeri maliklerini, ilave bedelleri ve taksit planını girin.</p>
+          </div>
+        </div>
+        <div class="table-wrap"><table id="owners"></table></div>
+        <div class="actions no-print">
+          <button class="btn soft" onclick="addOwner()">+ Malik Ekle</button>
+          <button class="btn soft" onclick="distOwners()">%30 / %30 / %30 / %10 Dağıt</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-title">
+          <div>
+            <h2>3) Devlet / Kentsel Dönüşüm Hakedişleri</h2>
+            <p>Devlet tarafından ödenecek rakamları hakediş sırasına göre planlayın.</p>
+          </div>
+        </div>
+        <div class="table-wrap"><table id="govs"></table></div>
+        <div class="actions no-print">
+          <button class="btn soft" onclick="addGov()">+ Hakediş Ekle</button>
+          <button class="btn soft" onclick="distGovs()">%30 / %30 / %30 / %10 Dağıt</button>
+        </div>
+      </section>
+    </div>
+
+    <section class="card">
+      <div class="card-title">
+        <div>
+          <h2>4) Satış Geliri</h2>
+          <p>Müteahhide / yatırımcıya kalacak mesken, iş yeri veya diğer satılabilir alanlar.</p>
+        </div>
+      </div>
+      <div class="table-wrap"><table id="sales"></table></div>
+      <div class="actions no-print">
+        <button class="btn soft" onclick="addSale()">+ Satış Kalemi Ekle</button>
+      </div>
+    </section>
+  </section>
+
+  <section id="tab-cost" class="tab-page">
+    <section class="card">
+      <div class="card-title">
+        <div>
+          <h2>5) İnşaat Maliyet Analizi</h2>
+          <p>Ruhsat, temel, kaba inşaat, ince inşaat, mekanik/elektrik ve genel gider kalemleri.</p>
+        </div>
+        <div class="title-actions no-print">
+          <button class="btn soft" onclick="fillCostArea()">Boş Miktarları İnşaat m² ile Doldur</button>
+          <button class="btn soft" onclick="reloadCosts()">Maliyet Şablonu Yükle</button>
+        </div>
+      </div>
+      <div class="table-wrap"><table id="costs"></table></div>
+      <div class="actions no-print">
+        <button class="btn soft" onclick="addCost()">+ Maliyet Kalemi Ekle</button>
+      </div>
+    </section>
+  </section>
+
+  <section id="tab-cash" class="tab-page">
+    <section class="card">
+      <div class="card-title">
+        <div>
+          <h2>6) Taksit, Hakediş ve Maliyet Dağılımı</h2>
+          <p>Nakit girişleri taksit bazında, giderler aşama bazında gösterilir.</p>
+        </div>
+      </div>
+      <div class="split">
+        <div class="table-wrap"><table id="cash"></table></div>
+        <div class="table-wrap"><table id="stage"></table></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-title">
+        <div>
+          <h2>7) Risk Senaryoları</h2>
+          <p>Satış fiyatı düşüşü ve maliyet artışı etkisini karşılaştırın.</p>
+        </div>
+      </div>
+      <div class="table-wrap"><table id="risk"></table></div>
+    </section>
+  </section>
+
+  <section id="tab-report" class="tab-page">
+    <section class="card">
+      <div class="card-title">
+        <div>
+          <h2>8) Analist Raporu</h2>
+          <p>Kârlılık, m² maliyet, başabaş satış fiyatı ve kontrol notları.</p>
+        </div>
+        <div class="title-actions no-print">
+          <button class="btn primary" onclick="window.print()">PDF / Yazdır</button>
+        </div>
+      </div>
+      <div class="report-grid">
+        <div class="note">
+          <h3>Analist Notu</h3>
+          <div id="note"></div>
+          <div class="foot">
+            Bu tablo karar destek amaçlıdır. Kesin metraj, ruhsat harçları, vergi, finansman, yapı denetim ve mevzuat kontrolleri ayrıca doğrulanmalıdır.
+          </div>
+        </div>
+        <div class="note">
+          <h3>Finansal Göstergeler</h3>
+          <div id="metrics"></div>
+        </div>
+      </div>
+    </section>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const KEY="kd_analiz_programi_v2";
+const LEGACY_KEY="kd_analiz_programi_v1";
+const STAGES=["Ruhsat","Temel","Kaba İnşaat","İnce İnşaat","Mekanik/Elektrik","Genel Gider","Diğer"];
+const P=[.30,.30,.30,.10];
+
+function uid(){return Math.random().toString(36).slice(2,10)}
+function n(v){v=Number(v);return isFinite(v)?v:0}
+function tl(v){return new Intl.NumberFormat("tr-TR",{style:"currency",currency:"TRY",maximumFractionDigits:0}).format(n(v))}
+function say(v,d=2){return new Intl.NumberFormat("tr-TR",{maximumFractionDigits:d}).format(n(v))}
+function oran(v){return isFinite(v)?v.toFixed(1).replace(".",",")+"%":"—"}
+function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function today(){let d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
+function set(id,val){let e=document.getElementById(id);if(e)e.innerHTML=val}
+function setText(id,val){let e=document.getElementById(id);if(e)e.textContent=val}
+function notify(msg){
+  const t=document.getElementById("toast");
+  if(!t)return;
+  t.textContent=msg;
+  t.classList.add("show");
+  clearTimeout(notify.timer);
+  notify.timer=setTimeout(()=>t.classList.remove("show"),2200);
+}
+function lastSaved(){
+  const stamp=new Date().toLocaleString("tr-TR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
+  setText("lastSaved","Son kayıt: "+stamp);
+}
+
+function owner(){return{id:uid(),name:"",type:"Mesken",old:"",newu:"",m2:0,total:0,t1:0,t2:0,t3:0,t4:0,note:""}}
+function gov(){return{id:uid(),name:"Kentsel dönüşüm hakedişi",note:"",total:0,t1:0,t2:0,t3:0,t4:0}}
+function sale(){return{id:uid(),name:"Müteahhit payı satış",type:"Mesken",adet:0,m2:0,price:0,note:""}}
+function cost(stage,cat,item,qty=0,unit=0){return{id:uid(),stage,cat,item,qty,unit,note:""}}
+
+function costTemplate(area=0){
+  return[
+    cost("Ruhsat","Ruhsat & Proje","Mimari/statik/mekanik/elektrik proje bedelleri",1,0),
+    cost("Ruhsat","Ruhsat & Proje","Ruhsat harçları, belediye ve resmi giderler",1,0),
+    cost("Temel","Temel","Hafriyat, iksa, zemin güçlendirme",area,0),
+    cost("Temel","Temel","Temel betonarme, demir, kalıp, izolasyon",area,0),
+    cost("Kaba İnşaat","Kaba İnşaat","Betonarme taşıyıcı sistem",area,0),
+    cost("Kaba İnşaat","Kaba İnşaat","Duvar, çatı ve dış cephe kaba işleri",area,0),
+    cost("İnce İnşaat","İnce İnşaat","Sıva, şap, seramik, boya, kapı, pencere",area,0),
+    cost("Mekanik/Elektrik","Mekanik & Elektrik","Mekanik tesisat, elektrik, yangın, asansör",area,0),
+    cost("Genel Gider","Genel Gider","Şantiye, finansman, pazarlama, beklenmeyen gider",1,0)
+  ]
+}
+
+function blank(){
+  return{
+    project:{name:"Kentsel Dönüşüm Projesi",company:"",parcel:"",date:today(),buildArea:0,saleArea:0},
+    owners:[owner()],
+    govs:[gov()],
+    sales:[sale()],
+    costs:costTemplate(0)
+  }
+}
+
+function safeState(x){
+  const b=blank();
+  x=x||{};
+  return {
+    project:{...b.project,...(x.project||{})},
+    owners:Array.isArray(x.owners)&&x.owners.length?x.owners:b.owners,
+    govs:Array.isArray(x.govs)&&x.govs.length?x.govs:b.govs,
+    sales:Array.isArray(x.sales)&&x.sales.length?x.sales:b.sales,
+    costs:Array.isArray(x.costs)&&x.costs.length?x.costs:b.costs
+  };
+}
+
+let S;
+try{
+  S=safeState(JSON.parse(localStorage.getItem(KEY)||localStorage.getItem(LEGACY_KEY)||"null"));
+}catch(e){
+  S=blank();
+}
+
+function save(show=false){
+  localStorage.setItem(KEY,JSON.stringify(S));
+  lastSaved();
+  if(show) notify("Kaydedildi.");
+}
+
+function showTab(name,btn){
+  document.querySelectorAll(".tab-page").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));
+  const page=document.getElementById("tab-"+name);
+  if(page)page.classList.add("active");
+  const targetBtn=btn||Array.from(document.querySelectorAll(".tab-btn")).find(x=>x.getAttribute("onclick")?.includes("'"+name+"'"));
+  if(targetBtn)targetBtn.classList.add("active");
+  if(page)page.scrollIntoView({block:"start",behavior:"smooth"});
+}
+
+function inp(t,i,f,type="text",step="any",placeholder=""){
+  return `<input data-t="${t}" data-i="${i}" data-f="${f}" type="${type}" step="${step}" value="${esc(S[t][i][f])}" placeholder="${esc(placeholder)}">`
+}
+function sel(t,i,f,arr){
+  let v=S[t][i][f];
+  return `<select data-t="${t}" data-i="${i}" data-f="${f}">`+
+    arr.map(x=>`<option value="${esc(x)}" ${x===v?"selected":""}>${esc(x)}</option>`).join("")+
+  `</select>`
+}
+
+document.addEventListener("input",update);
+document.addEventListener("change",update);
+
+function update(e){
+  if(!e.target)return;
+  if(e.target.dataset.p){
+    let f=e.target.dataset.p;
+    S.project[f]=e.target.type==="number"?n(e.target.value):e.target.value;
+    save();
+    calc();
+    return;
+  }
+  if(e.target.dataset.t){
+    let t=e.target.dataset.t,i=+e.target.dataset.i,f=e.target.dataset.f;
+    if(!S[t]||!S[t][i])return;
+    S[t][i][f]=e.target.type==="number"?n(e.target.value):e.target.value;
+    save();
+    updateLine(t,i);
+    calc();
+  }
+}
+
+function setCell(id,val,cls=""){
+  let e=document.getElementById(id);
+  if(!e)return;
+  e.innerHTML=val;
+  if(cls)e.className=cls;
+}
+
+function updateLine(t,i){
+  if(t==="owners"){
+    let r=S.owners[i],sum=n(r.t1)+n(r.t2)+n(r.t3)+n(r.t4),diff=n(r.total)-sum;
+    setCell("owSum"+i,tl(sum),"num");
+    setCell("owDiff"+i,tl(diff),"num "+(Math.abs(diff)>1?"warn":""));
+  }
+  if(t==="govs"){
+    let r=S.govs[i],sum=n(r.t1)+n(r.t2)+n(r.t3)+n(r.t4),diff=n(r.total)-sum;
+    setCell("gvSum"+i,tl(sum),"num");
+    setCell("gvDiff"+i,tl(diff),"num "+(Math.abs(diff)>1?"warn":""));
+  }
+  if(t==="sales"){
+    let r=S.sales[i];
+    setCell("slSum"+i,tl(n(r.adet)*n(r.m2)*n(r.price)),"num");
+  }
+  if(t==="costs"){
+    let r=S.costs[i];
+    setCell("csSum"+i,tl(n(r.qty)*n(r.unit)),"num");
+  }
+}
+
+function render(){
+  document.querySelectorAll("[data-p]").forEach(x=>x.value=S.project[x.dataset.p]??"");
+  renderOwners();
+  renderGovs();
+  renderSales();
+  renderCosts();
+  calc();
+  lastSaved();
+}
+
+function renderOwners(){
+  let body=S.owners.map((r,i)=>{
+    let sum=n(r.t1)+n(r.t2)+n(r.t3)+n(r.t4),diff=n(r.total)-sum;
+    return `<tr>
+      <td>${inp("owners",i,"name","text","any","Malik adı")}</td>
+      <td>${sel("owners",i,"type",["Mesken","İş Yeri"])}</td>
+      <td>${inp("owners",i,"old","text","any","Mevcut")}</td>
+      <td>${inp("owners",i,"newu","text","any","Yeni")}</td>
+      <td>${inp("owners",i,"m2","number","0.01")}</td>
+      <td>${inp("owners",i,"total","number","1000")}</td>
+      <td>${inp("owners",i,"t1","number","1000")}</td>
+      <td>${inp("owners",i,"t2","number","1000")}</td>
+      <td>${inp("owners",i,"t3","number","1000")}</td>
+      <td>${inp("owners",i,"t4","number","1000")}</td>
+      <td class="num" id="owSum${i}">${tl(sum)}</td>
+      <td class="num ${Math.abs(diff)>1?"warn":""}" id="owDiff${i}">${tl(diff)}</td>
+      <td>${inp("owners",i,"note","text","any","Not")}</td>
+      <td class="no-print"><button class="btn danger" onclick="del('owners',${i})">Sil</button></td>
+    </tr>`
+  }).join("");
+  set("owners",`
+    <thead><tr>
+      <th>Malik</th><th>Tür</th><th>Mevcut Bölüm</th><th>Yeni Bölüm</th>
+      <th class="num">m²</th><th class="num">İlave Bedel</th>
+      <th class="num">1. Taksit %30</th><th class="num">2. Taksit %30</th><th class="num">3. Taksit %30</th><th class="num">4. Taksit %10</th>
+      <th class="num">Taksit Toplamı</th><th class="num">Fark</th><th>Not</th><th class="no-print">İşlem</th>
+    </tr></thead>
+    <tbody>${body}</tbody>
+    <tfoot><tr>
+      <td colspan="5">Toplam</td>
+      <td class="num" id="owPlan">₺0</td><td class="num" id="owT1">₺0</td><td class="num" id="owT2">₺0</td><td class="num" id="owT3">₺0</td><td class="num" id="owT4">₺0</td>
+      <td class="num" id="owTotal">₺0</td><td class="num" id="owDiffTotal">₺0</td><td></td><td class="no-print"></td>
+    </tr></tfoot>
+  `)
+}
+
+function renderGovs(){
+  let body=S.govs.map((r,i)=>{
+    let sum=n(r.t1)+n(r.t2)+n(r.t3)+n(r.t4),diff=n(r.total)-sum;
+    return `<tr>
+      <td>${inp("govs",i,"name","text","any","Hakediş adı")}</td>
+      <td>${inp("govs",i,"note","text","any","Açıklama")}</td>
+      <td>${inp("govs",i,"total","number","1000")}</td>
+      <td>${inp("govs",i,"t1","number","1000")}</td>
+      <td>${inp("govs",i,"t2","number","1000")}</td>
+      <td>${inp("govs",i,"t3","number","1000")}</td>
+      <td>${inp("govs",i,"t4","number","1000")}</td>
+      <td class="num" id="gvSum${i}">${tl(sum)}</td>
+      <td class="num ${Math.abs(diff)>1?"warn":""}" id="gvDiff${i}">${tl(diff)}</td>
+      <td class="no-print"><button class="btn danger" onclick="del('govs',${i})">Sil</button></td>
+    </tr>`
+  }).join("");
+  set("govs",`
+    <thead><tr>
+      <th>Kalem</th><th>Açıklama</th><th class="num">Toplam Hakediş</th>
+      <th class="num">1. %30</th><th class="num">2. %30</th><th class="num">3. %30</th><th class="num">4. %10</th>
+      <th class="num">Hakediş Toplamı</th><th class="num">Fark</th><th class="no-print">İşlem</th>
+    </tr></thead>
+    <tbody>${body}</tbody>
+    <tfoot><tr>
+      <td colspan="2">Toplam</td>
+      <td class="num" id="gvPlan">₺0</td><td class="num" id="gvT1">₺0</td><td class="num" id="gvT2">₺0</td><td class="num" id="gvT3">₺0</td><td class="num" id="gvT4">₺0</td>
+      <td class="num" id="gvTotal">₺0</td><td class="num" id="gvDiffTotal">₺0</td><td class="no-print"></td>
+    </tr></tfoot>
+  `)
+}
+
+function renderSales(){
+  let body=S.sales.map((r,i)=>{
+    let sum=n(r.adet)*n(r.m2)*n(r.price);
+    return `<tr>
+      <td>${inp("sales",i,"name","text","any","Satış kalemi")}</td>
+      <td>${sel("sales",i,"type",["Mesken","İş Yeri","Arsa Payı","Diğer"])}</td>
+      <td>${inp("sales",i,"adet","number","1")}</td>
+      <td>${inp("sales",i,"m2","number","0.01")}</td>
+      <td>${inp("sales",i,"price","number","1000")}</td>
+      <td class="num" id="slSum${i}">${tl(sum)}</td>
+      <td>${inp("sales",i,"note","text","any","Not")}</td>
+      <td class="no-print"><button class="btn danger" onclick="del('sales',${i})">Sil</button></td>
+    </tr>`
+  }).join("");
+  set("sales",`
+    <thead><tr>
+      <th>Satış Kalemi</th><th>Tür</th><th class="num">Adet</th><th class="num">Birim m²</th><th class="num">m² Satış Fiyatı</th><th class="num">Satış Tutarı</th><th>Not</th><th class="no-print">İşlem</th>
+    </tr></thead>
+    <tbody>${body}</tbody>
+    <tfoot><tr>
+      <td colspan="2">Toplam</td><td class="num" id="slAdet">0</td><td class="num" id="slM2">0 m²</td><td></td><td class="num" id="slTotal">₺0</td><td></td><td class="no-print"></td>
+    </tr></tfoot>
+  `)
+}
+
+function renderCosts(){
+  let body=S.costs.map((r,i)=>{
+    let sum=n(r.qty)*n(r.unit);
+    return `<tr>
+      <td>${sel("costs",i,"stage",STAGES)}</td>
+      <td>${inp("costs",i,"cat","text","any","Kategori")}</td>
+      <td>${inp("costs",i,"item","text","any","Maliyet kalemi")}</td>
+      <td>${inp("costs",i,"qty","number","0.01")}</td>
+      <td>${inp("costs",i,"unit","number","100")}</td>
+      <td class="num" id="csSum${i}">${tl(sum)}</td>
+      <td>${inp("costs",i,"note","text","any","Not")}</td>
+      <td class="no-print"><button class="btn danger" onclick="del('costs',${i})">Sil</button></td>
+    </tr>`
+  }).join("");
+  set("costs",`
+    <thead><tr>
+      <th>Aşama</th><th>Kategori</th><th>Maliyet Kalemi</th><th class="num">Miktar / m²</th><th class="num">Birim Maliyet</th><th class="num">Toplam</th><th>Not</th><th class="no-print">İşlem</th>
+    </tr></thead>
+    <tbody>${body}</tbody>
+    <tfoot><tr><td colspan="5">Toplam Maliyet</td><td class="num" id="csTotal">₺0</td><td></td><td class="no-print"></td></tr></tfoot>
+  `)
+}
+
+function totals(){
+  let T={
+    owPlan:0,ow:[0,0,0,0],
+    gvPlan:0,gv:[0,0,0,0],
+    sales:0,saleM2:0,saleAdet:0,
+    cost:0,stage:{}
+  };
+  STAGES.forEach(x=>T.stage[x]=0);
+
+  S.owners.forEach(r=>{
+    T.owPlan+=n(r.total);
+    T.ow[0]+=n(r.t1);T.ow[1]+=n(r.t2);T.ow[2]+=n(r.t3);T.ow[3]+=n(r.t4);
+  });
+  S.govs.forEach(r=>{
+    T.gvPlan+=n(r.total);
+    T.gv[0]+=n(r.t1);T.gv[1]+=n(r.t2);T.gv[2]+=n(r.t3);T.gv[3]+=n(r.t4);
+  });
+  S.sales.forEach(r=>{
+    T.sales+=n(r.adet)*n(r.m2)*n(r.price);
+    T.saleM2+=n(r.adet)*n(r.m2);
+    T.saleAdet+=n(r.adet);
+  });
+  S.costs.forEach(r=>{
+    let v=n(r.qty)*n(r.unit);
+    T.cost+=v;
+    T.stage[r.stage]=(T.stage[r.stage]||0)+v;
+  });
+
+  T.owTotal=T.ow.reduce((a,b)=>a+b,0);
+  T.gvTotal=T.gv.reduce((a,b)=>a+b,0);
+  T.income=T.owTotal+T.gvTotal+T.sales;
+  T.profit=T.income-T.cost;
+  T.margin=T.income?T.profit/T.income*100:NaN;
+  T.roi=T.cost?T.profit/T.cost*100:NaN;
+  T.m2cost=n(S.project.buildArea)?T.cost/n(S.project.buildArea):NaN;
+  T.sellArea=T.saleM2||n(S.project.saleArea);
+  T.breakEven=T.sellArea?Math.max(0,T.cost-T.owTotal-T.gvTotal)/T.sellArea:NaN;
+  return T;
+}
+
+function status(T){
+  if(T.income===0 && T.cost===0)return ["Veri bekleniyor","neutral","Henüz gelir veya maliyet girişi yok."];
+  if(T.profit<0)return ["Zarar riski","bad","Gelirler maliyeti karşılamıyor."];
+  if(T.margin<15)return ["Düşük marj","warn","Küçük sapmalar sonucu bozabilir."];
+  if(T.margin<25)return ["Orta kârlılık","good","Varsayımlar makul görünüyor."];
+  return ["Güçlü senaryo","good","Mevcut varsayımlar pozitif."];
+}
+
+function calc(){
+  let T=totals();
+  set("sOwner",tl(T.owTotal));
+  set("sGov",tl(T.gvTotal));
+  set("sSales",tl(T.sales));
+  set("sCost",tl(T.cost));
+  set("sProfit",tl(T.profit));
+  set("sMargin","Kâr marjı: "+oran(T.margin));
+  set("sBreakEven",isFinite(T.breakEven)?tl(T.breakEven):"—");
+  set("sM2Cost","m² maliyet: "+(isFinite(T.m2cost)?tl(T.m2cost):"—"));
+
+  const profit=document.getElementById("sProfit");
+  if(profit)profit.className=T.profit<0?"bad":(T.margin<15?"warn":"good");
+
+  const [label,kind,desc]=status(T);
+  set("overallStatus",label);
+  const st=document.getElementById("overallStatus");
+  if(st)st.className="pill "+(kind==="neutral"?"neutral":kind);
+  setText("summaryHint",desc);
+
+  set("owPlan",tl(T.owPlan)); set("owT1",tl(T.ow[0])); set("owT2",tl(T.ow[1])); set("owT3",tl(T.ow[2])); set("owT4",tl(T.ow[3]));
+  set("owTotal",tl(T.owTotal)); set("owDiffTotal",tl(T.owPlan-T.owTotal));
+
+  set("gvPlan",tl(T.gvPlan)); set("gvT1",tl(T.gv[0])); set("gvT2",tl(T.gv[1])); set("gvT3",tl(T.gv[2])); set("gvT4",tl(T.gv[3]));
+  set("gvTotal",tl(T.gvTotal)); set("gvDiffTotal",tl(T.gvPlan-T.gvTotal));
+
+  set("slAdet",say(T.saleAdet,0));
+  set("slM2",say(T.saleM2,2)+" m²");
+  set("slTotal",tl(T.sales));
+  set("csTotal",tl(T.cost));
+
+  renderCash(T);
+  renderStage(T);
+  renderReport(T);
+  renderRisk(T);
+
+  set("printSub",`${esc(S.project.name||"Proje")} | ${esc(S.project.company||"Yüklenici belirtilmedi")} | ${esc(S.project.parcel||"Ada/parsel belirtilmedi")} | ${esc(S.project.date||"")}`);
+}
+
+function renderCash(T){
+  let total=[0,1,2,3].map(i=>T.ow[i]+T.gv[i]);
+  set("cash",`
+    <thead><tr><th>Nakit Girişi</th><th class="num">1. Taksit</th><th class="num">2. Taksit</th><th class="num">3. Taksit</th><th class="num">4. Taksit</th><th class="num">Toplam</th></tr></thead>
+    <tbody>
+      <tr><td>Maliklerden ilave bedel</td><td class="num">${tl(T.ow[0])}</td><td class="num">${tl(T.ow[1])}</td><td class="num">${tl(T.ow[2])}</td><td class="num">${tl(T.ow[3])}</td><td class="num">${tl(T.owTotal)}</td></tr>
+      <tr><td>Devlet / hakediş</td><td class="num">${tl(T.gv[0])}</td><td class="num">${tl(T.gv[1])}</td><td class="num">${tl(T.gv[2])}</td><td class="num">${tl(T.gv[3])}</td><td class="num">${tl(T.gvTotal)}</td></tr>
+    </tbody>
+    <tfoot><tr><td>Toplam Taksitli Giriş</td><td class="num">${tl(total[0])}</td><td class="num">${tl(total[1])}</td><td class="num">${tl(total[2])}</td><td class="num">${tl(total[3])}</td><td class="num">${tl(T.owTotal+T.gvTotal)}</td></tr></tfoot>
+  `)
+}
+
+function renderStage(T){
+  let rows=STAGES.map(s=>{
+    let v=T.stage[s]||0, p=T.cost?v/T.cost*100:0;
+    return `<tr><td>${s}</td><td class="num">${tl(v)}</td><td class="num">${oran(p)}</td></tr>`
+  }).join("");
+  set("stage",`
+    <thead><tr><th>Maliyet Aşaması</th><th class="num">Tutar</th><th class="num">Pay</th></tr></thead>
+    <tbody>${rows}</tbody>
+    <tfoot><tr><td>Toplam</td><td class="num">${tl(T.cost)}</td><td class="num">100%</td></tr></tfoot>
+  `)
+}
+
+function renderReport(T){
+  let notes=[];
+  let badge;
+  const [label,kind]=status(T);
+
+  if(kind==="neutral"){
+    badge=`<span class="pill neutral">${label}</span>`;
+    notes.push("Tablolar doldurulduğunda analiz otomatik oluşacaktır.");
+  }else if(kind==="bad"){
+    badge=`<span class="pill bad">${label}</span>`;
+    notes.push("Mevcut senaryoda proje zarar göstermektedir. Satış fiyatı, malik ilave bedelleri, devlet hakedişleri veya maliyet varsayımları revize edilmelidir.");
+  }else if(kind==="warn"){
+    badge=`<span class="pill warn">${label}</span>`;
+    notes.push("Proje kârda görünse de marj düşüktür. Maliyet artışı veya satış fiyatı düşüşü kârlılığı hızlıca bozabilir.");
+  }else if(T.margin<25){
+    badge=`<span class="pill good">${label}</span>`;
+    notes.push("Kârlılık makul seviyededir. Finansman maliyeti, satış hızı ve inşaat süresi takip edilmelidir.");
+  }else{
+    badge=`<span class="pill good">${label}</span>`;
+    notes.push("Mevcut varsayımlara göre kârlılık güçlü görünmektedir. Yine de metraj ve ruhsat riskleri ayrıca kontrol edilmelidir.");
+  }
+
+  if(Math.abs(T.owPlan-T.owTotal)>1) notes.push("Malik toplam ilave bedelleri ile taksit toplamı arasında fark var: "+tl(T.owPlan-T.owTotal));
+  if(Math.abs(T.gvPlan-T.gvTotal)>1) notes.push("Devlet/hakediş toplamı ile taksit toplamı arasında fark var: "+tl(T.gvPlan-T.gvTotal));
+  if(T.sales===0) notes.push("Satış geliri girilmedi. Müteahhide kalan bağımsız bölümlerin satış senaryosu eklenmelidir.");
+  if(T.cost===0) notes.push("Maliyet girişi yapılmadı. Ruhsat, temel, kaba inşaat ve ince inşaat kalemleri doldurulmalıdır.");
+  if(isFinite(T.breakEven)) notes.push("Malik ve devlet gelirleri sonrası başabaş satış fiyatı yaklaşık "+tl(T.breakEven)+" / m² seviyesindedir.");
+
+  set("note",`${badge}<ul>${notes.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`);
+
+  set("metrics",`
+    <div class="metric"><span>Toplam Gelir</span><b>${tl(T.income)}</b></div>
+    <div class="metric"><span>Net Kalan / Kâr</span><b class="${T.profit<0?"bad":"good"}">${tl(T.profit)}</b></div>
+    <div class="metric"><span>Kâr Marjı</span><b>${oran(T.margin)}</b></div>
+    <div class="metric"><span>Maliyet Üzerinden Getiri</span><b>${oran(T.roi)}</b></div>
+    <div class="metric"><span>İnşaat Alanı</span><b>${say(S.project.buildArea,2)} m²</b></div>
+    <div class="metric"><span>Toplam Maliyet / İnşaat m²</span><b>${isFinite(T.m2cost)?tl(T.m2cost)+" / m²":"—"}</b></div>
+    <div class="metric"><span>Satılabilir Alan</span><b>${say(T.sellArea,2)} m²</b></div>
+    <div class="metric"><span>Başabaş Satış Fiyatı</span><b>${isFinite(T.breakEven)?tl(T.breakEven)+" / m²":"—"}</b></div>
+  `)
+}
+
+function renderRisk(T){
+  let rows=[
+    ["Ana senaryo","Mevcut gelir ve maliyet varsayımları",T.profit],
+    ["Satış fiyatı %10 düşerse","Sadece satış gelirinde %10 azalma",T.income-(T.sales*.10)-T.cost],
+    ["Maliyet %10 artarsa","Toplam maliyette %10 artış",T.income-(T.cost*1.10)],
+    ["Satış %10 düşer + maliyet %10 artarsa","Olumsuz birleşik senaryo",T.income-(T.sales*.10)-(T.cost*1.10)]
+  ].map(r=>`
+    <tr>
+      <td>${r[0]}</td><td>${r[1]}</td>
+      <td class="num ${r[2]<0?"bad":"good"}">${tl(r[2])}</td>
+      <td>${r[2]<0?'<span class="pill bad">Zarar</span>':'<span class="pill good">Pozitif</span>'}</td>
+    </tr>
+  `).join("");
+
+  set("risk",`
+    <thead><tr><th>Senaryo</th><th>Açıklama</th><th class="num">Net Kalan</th><th>Durum</th></tr></thead>
+    <tbody>${rows}</tbody>
+  `)
+}
+
+function addOwner(){S.owners.push(owner());save();render();notify("Malik satırı eklendi.")}
+function addGov(){S.govs.push(gov());save();render();notify("Hakediş satırı eklendi.")}
+function addSale(){S.sales.push(sale());save();render();notify("Satış kalemi eklendi.")}
+function addCost(){S.costs.push(cost("Diğer","","",0,0));save();render();notify("Maliyet kalemi eklendi.")}
+function del(t,i){
+  if(!S[t]||!S[t][i])return;
+  S[t].splice(i,1);
+  if(!S[t].length){
+    if(t==="owners")S[t].push(owner());
+    if(t==="govs")S[t].push(gov());
+    if(t==="sales")S[t].push(sale());
+    if(t==="costs")S[t].push(cost("Diğer","","",0,0));
+  }
+  save();render();notify("Satır silindi.");
+}
+
+function distOwners(){
+  S.owners.forEach(r=>{
+    let total=n(r.total);
+    r.t1=Math.round(total*P[0]);
+    r.t2=Math.round(total*P[1]);
+    r.t3=Math.round(total*P[2]);
+    r.t4=total-r.t1-r.t2-r.t3;
+  });
+  save();render();notify("Malik taksitleri dağıtıldı.");
+}
+
+function distGovs(){
+  S.govs.forEach(r=>{
+    let total=n(r.total);
+    r.t1=Math.round(total*P[0]);
+    r.t2=Math.round(total*P[1]);
+    r.t3=Math.round(total*P[2]);
+    r.t4=total-r.t1-r.t2-r.t3;
+  });
+  save();render();notify("Hakediş taksitleri dağıtıldı.");
+}
+
+function fillCostArea(){
+  let a=n(S.project.buildArea);
+  if(!a){notify("Önce toplam inşaat alanını girin.");return;}
+  S.costs.forEach(r=>{if(!n(r.qty))r.qty=a});
+  save();render();notify("Boş miktarlar inşaat m² ile dolduruldu.");
+}
+
+function reloadCosts(){
+  if(confirm("Mevcut maliyet satırları silinip standart şablon yüklensin mi?")){
+    S.costs=costTemplate(n(S.project.buildArea));
+    save();render();notify("Maliyet şablonu yüklendi.");
+  }
+}
+
+function resetAll(){
+  if(confirm("Tüm veriler silinip boş şablona dönülsün mü?")){
+    S=blank();
+    save();render();showTab("project");notify("Boş şablona dönüldü.");
+  }
+}
+
+function sample(){
+  if(!confirm("Örnek veriler yüklensin mi? Mevcut verilerin üzerine yazılır."))return;
+  let area=5200;
+  S={
+    project:{
+      name:"Örnek Kentsel Dönüşüm Fizibilite Raporu",
+      company:"Örnek İnşaat A.Ş.",
+      parcel:"Örnek Mah. 123 Ada 45 Parsel",
+      date:today(),
+      buildArea:area,
+      saleArea:1450
+    },
+    owners:[
+      {id:uid(),name:"Malik 1",type:"Mesken",old:"Daire 1",newu:"A Blok 1",m2:115,total:900000,t1:270000,t2:270000,t3:270000,t4:90000,note:"İlave m² farkı"},
+      {id:uid(),name:"Malik 2",type:"Mesken",old:"Daire 2",newu:"A Blok 2",m2:105,total:650000,t1:195000,t2:195000,t3:195000,t4:65000,note:""},
+      {id:uid(),name:"Malik 3",type:"İş Yeri",old:"Dükkan 1",newu:"Zemin 1",m2:80,total:1200000,t1:360000,t2:360000,t3:360000,t4:120000,note:"Cephe farkı"}
+    ],
+    govs:[
+      {id:uid(),name:"Devlet destek / hakediş kalemi",note:"Örnek %30-%30-%30-%10",total:2500000,t1:750000,t2:750000,t3:750000,t4:250000}
+    ],
+    sales:[
+      {id:uid(),name:"Müteahhit payı mesken",type:"Mesken",adet:10,m2:95,price:70000,note:"Tahmini satış"},
+      {id:uid(),name:"Müteahhit payı iş yeri",type:"İş Yeri",adet:2,m2:250,price:95000,note:"Tahmini satış"}
+    ],
+    costs:[
+      cost("Ruhsat","Ruhsat & Proje","Proje, ruhsat ve resmi giderler",1,4500000),
+      cost("Temel","Temel","Hafriyat, iksa, temel betonarme",area,6500),
+      cost("Kaba İnşaat","Kaba İnşaat","Betonarme, duvar, çatı",area,12000),
+      cost("İnce İnşaat","İnce İnşaat","İnce işler ve malzeme",area,14500),
+      cost("Mekanik/Elektrik","Mekanik & Elektrik","Mekanik, elektrik, asansör",area,6200),
+      cost("Genel Gider","Genel Gider","Finansman, şantiye, pazarlama, beklenmeyen",1,9500000)
+    ]
+  };
+  save();render();showTab("report");notify("Örnek veri yüklendi.");
+}
+
+function exportJSON(){
+  let blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"});
+  let a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=(S.project.name||"kentsel-donusum-analiz").replace(/[^\wğüşöçıİĞÜŞÖÇ]+/gi,"-")+".json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+  notify("JSON yedeği indirildi.");
+}
+
+function importJSON(e){
+  let f=e.target.files[0];
+  if(!f)return;
+  let r=new FileReader();
+  r.onload=ev=>{
+    try{
+      let x=JSON.parse(ev.target.result);
+      if(!x.project||!x.owners||!x.costs)throw Error();
+      S=safeState(x);
+      save();render();notify("Yedek dosyası yüklendi.");
+    }catch(err){
+      alert("Dosya okunamadı. Bu programa ait geçerli bir JSON yedeği seçin.");
+    }finally{
+      e.target.value="";
+    }
+  };
+  r.readAsText(f);
+}
+
+render();
+</script>
+</body>
+</html>
